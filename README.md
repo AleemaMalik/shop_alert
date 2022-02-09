@@ -1,1 +1,2 @@
-# This is the official shop_alert app connected to AWS
+# shopAlert
+This is the official github repository for shopAlert. It is connected to Amazon's AWS Amplify Services
