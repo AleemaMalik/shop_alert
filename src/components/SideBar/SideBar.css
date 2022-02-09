@@ -1,0 +1,88 @@
+.SideBar {
+  height: 100%;
+  width: 15%;
+  background: rgb(78, 58, 141);
+}
+
+.SideBar .SearchBar {
+  border: 0px;
+  height: 60px;
+  width: 100%;
+  outline: none;
+  border-radius: 25px;
+}
+
+.SideBar .SearchBar .SearchButton {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  margin: 14px 8px;
+  background: transparent;
+  border: 0;
+  font-size: 20px;
+  color: azure;
+}
+
+.SideBar .SearchBar .SearchButton:hover {
+  cursor: pointer;
+  color: rgb(60, 41, 124);
+  font-size: 18px;
+}
+
+.SideBar .SearchBar input[type="text"] {
+  height: 30px;
+  width: 92%;
+  margin: 14px 8px;
+  border: 0;
+  background: rgb(152, 138, 199);
+  outline: none;
+  border-radius: 25px;
+  box-sizing: border-box;
+  padding: 0 40px;
+  color: rgb(255, 255, 255);
+}
+
+.divider {
+  width: 92%;
+  height: 1px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 1px;
+  background: rgb(164, 152, 201);
+}
+
+.SideBarList {
+  height: 100%;
+  padding: 0;
+  width: 100%;
+}
+
+.SideBarList .row {
+  height: 80px;
+  width: 100%;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", Arial,
+    Helvetica, sans-serif;
+  font-size: 12pt;
+}
+.SideBarList .row:hover {
+  cursor: pointer;
+  background-color: rgb(60, 41, 124);
+}
+
+.row #logo {
+  display: grid;
+  place-items: center;
+}
+
+svg {
+  border-color: inherit;
+  width: 50%;
+  height: 100px;
+  overflow: hidden;
+}

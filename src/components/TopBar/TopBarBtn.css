@@ -1,0 +1,60 @@
+:root {
+  --primary: #f16775;
+}
+.rightHeader {
+  display: flex;
+  /* align-items: center; */
+  /* list-style: none; */
+  text-align: center;
+  justify-content: space-evenly;
+  /* width: 70vw; */
+  /* justify-content: end; */
+}
+.SignupBtn {
+  text-justify: distribute;
+  padding: 8px 20px;
+  width: 100%;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  background-color: var(--primary);
+}
+
+.SignupBtn:hover {
+  padding: 6px 18px;
+  transition: all 0.3s ease-out;
+  background-color: transparent;
+  color: #ffff;
+  border-radius: 25px;
+  border: 2px solid var(--primary);
+}
+
+@media screen and (max-width: 1024px) {
+  .SignupBtn {
+    display: none;
+  }
+}
+
+/* .loginBtn {
+  padding: 8px 24px;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  background-color: #2d283e;
+  border: 2px solid #802bb1;
+}
+
+.loginBtn:hover {
+  padding: 4px 20px;
+  transition: all 0.3s ease-out;
+  background-color: transparent;
+  border-radius: 25px;
+  border: 2px solid var(--primary);
+} */

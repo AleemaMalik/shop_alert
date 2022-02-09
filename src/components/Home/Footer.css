@@ -1,0 +1,10 @@
+.FooterContainer {
+  background: black;
+  height: max-content;
+  display: flex;
+}
+
+.FooterContent {
+  color: white;
+  margin: 24px 24px 24px 24px;
+}

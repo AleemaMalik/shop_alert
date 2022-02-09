@@ -1,0 +1,35 @@
+.insert-item-popup {
+  /* background: rgba(0, 0, 0, 0.2); */
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.insert-item-popup-content {
+  width: 100%;
+  max-width: 500px;
+  background: rgb(224, 223, 142);
+  padding: 20px;
+  border-radius: 10px;
+  position: fixed;
+  margin-right:750px;
+}
+
+.insert-item-popup input {
+  margin: 20px auto;
+  display: block;
+  width: 70%;
+  padding: 8px;
+  border: 1px solid gray;
+  border-radius: 10px;
+}
+
+.insert-item-popup button {
+  display: block;
+  margin: 20px auto;
+}

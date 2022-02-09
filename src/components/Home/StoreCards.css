@@ -1,0 +1,89 @@
+.StoreCardsContainer {
+  /* height: max-content; */
+  width: 100%;
+  background: white;
+  display: flex;
+  margin-top: 24px;
+  margin-bottom: 56px;
+}
+.StoreCardsText {
+  margin-left: 60px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.StoreCardsTitle {
+  color: #f16775;
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: bold;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  align-content: center;
+}
+
+.StoreCardsDesc {
+  max-width: 440px;
+  margin-bottom: 35px;
+  font-size: 18px;
+  line-height: 24px;
+  color: black;
+}
+
+.StoreCardsInfo {
+  display: flex;
+  margin-left: 60px;
+}
+
+.cardsRow {
+  margin: 0.5rem 2rem 0.5rem 2rem;
+  padding: 1.5rem;
+  height: 100px;
+  width: 200px;
+  box-shadow: 0 0 28px rgb(209, 207, 223);
+  transition: 0.3s ease;
+  cursor: pointer;
+  align-content: center;
+  color: white;
+  background: white;
+  justify-content: center;
+  text-align: center;
+  font-size: 12pt;
+}
+.cardsRow:hover {
+  transform: scale(1.1);
+}
+
+.cardsRow #cardLogo {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.cardsRow svg {
+  border-color: inherit;
+  width: 80%;
+  height: 100px;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 1000px) {
+  .StoreCardsInfo {
+    flex-direction: column;
+    flex-wrap: 100%;
+  }
+}
+
+/* .NotifBarList .row li {
+    height: 200px;
+    width: 100%;
+    list-style-type: none;
+    align-content: center;
+    color: #f16775;
+    background: white;
+    justify-content: center;
+    text-align: center;
+  
+    font-size: 12pt;
+  } */

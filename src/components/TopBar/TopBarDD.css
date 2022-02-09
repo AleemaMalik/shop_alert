@@ -1,0 +1,125 @@
+.NotificationBar {
+  position: absolute;
+  top: 80px;
+  height: auto;
+  width: 200px;
+  background: #373e98;
+}
+
+.NotificationBar .NotifSearchBar {
+  border: 0px;
+  height: 60px;
+  width: 100%;
+  outline: none;
+  border-radius: 25px;
+}
+
+.NotificationBar .NotifSearchBar .NotifSearchButton:hover {
+  cursor: pointer;
+  color: #373e98;
+  font-size: 18px;
+}
+
+.NotificationBar .NotifSearchBar input[type="text"] {
+  height: 30px;
+  width: 92%;
+  margin: 16px 8px;
+  border: 0;
+  background: #ffffff;
+  outline: none;
+  border-radius: 25px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  color: black;
+}
+
+/*
+.SideBarList {
+  height: auto;
+  padding: 0;
+  width: 100%;
+}*/
+
+.NotificationBar .SideBarList .row {
+  height: 80px;
+  width: 100%;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.NotificationBar .SideBarList .row:hover {
+  cursor: pointer;
+  background-color: #ffff;
+  background: white;
+  width: 99%;
+  border: 1px solid #373e98;
+}
+
+.row #logo {
+  display: grid;
+  place-items: center;
+}
+
+svg {
+  border-color: inherit;
+  width: 50%;
+  height: 56px;
+  overflow: hidden;
+}
+
+/***************************************/
+
+/* .dropdown-menu {
+  width: 15%;
+  height: 90%;
+  position: absolute;
+  top: 80px;
+  list-style: none;
+  text-align: center;
+}
+
+.dropdown-menu li {
+  height: 70px;
+  width: 100%;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  background-color: ;
+  justify-content: center;
+  align-items: center;
+
+  /* font-size: 12pt;
+  height: auto;
+  padding: 0;
+  width: 100%;
+  background: #2d283e;
+  cursor: pointer; */
+/* }
+
+.dropdown-menu li:hover {
+  cursor: pointer;
+  background-color: rgb(60, 41, 124);
+} */
+
+/* .dropdown-menu.clicked {
+  display: none;
+}
+.dropdown-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: #fff;
+  padding: 14px;
+} */
+
+/* svg {
+  border-color: inherit;
+  width: 50%;
+  height: 100px;
+  overflow: hidden;
+} */

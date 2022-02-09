@@ -1,0 +1,28 @@
+.main_dashboard {
+  margin-left: 100px;
+  top: 80px;
+  width: 100%;
+}
+.user {
+  color: black;
+  text-align: left;
+}
+
+.table_title {
+  color: black;
+  text-align: left;
+  font-weight: 700;
+  font-size: x-large;
+}
+
+.table {
+  border: solid #3b9db6ad;
+  width: 75%;
+}
+.add_item {
+  float: right;
+}
+.sideBarRow {
+  display: flex;
+  flex-direction: row;
+}

@@ -1,0 +1,60 @@
+.notifBar {
+  height: 100%;
+  width: 200px;
+  background: #373e98;
+  top: 80px;
+}
+
+/* .NotifBarList {
+  height: 100%;
+  padding: 0;
+  width: 200px;
+  list-style: none;
+  justify-content: center;
+} */
+
+.row1 {
+  margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+  padding: 1.5rem;
+  /* height: 200px; */
+  /* width: 100%; */
+  /* list-style-type: none; */
+  box-shadow: 0 0 28px rgb(109, 100, 190);
+  transition: 0.3s ease;
+  cursor: pointer;
+  align-content: center;
+  color: white;
+  background: #291477;
+  justify-content: center;
+  text-align: center;
+
+  font-size: 12pt;
+}
+.row1:hover {
+  transform: scale(1.1);
+}
+
+.row1 #logo2 {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+svg {
+  border-color: inherit;
+  width: 50%;
+  height: 100px;
+  overflow: hidden;
+}
+/* .NotifBarList .row li {
+  height: 200px;
+  width: 100%;
+  list-style-type: none;
+  align-content: center;
+  color: #f16775;
+  background: white;
+  justify-content: center;
+  text-align: center;
+
+  font-size: 12pt;
+} */

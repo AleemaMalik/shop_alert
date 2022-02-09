@@ -1,0 +1,30 @@
+.AboutPage {
+  background: #f16775;
+  height: max-content;
+  display: flex;
+  padding: 32px 0px;
+  /* margin-bottom: 64px; */
+  width: 100%;
+  padding: 60px 0;
+}
+.AboutPageText {
+  flex-direction: column;
+  margin-left: 60px;
+  margin-right: 60px;
+  justify-content: center;
+}
+.AboutPageTitle {
+  color: #fff;
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: bold;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.AboutDesc {
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 600;
+  color: white;
+}

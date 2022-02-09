@@ -1,26 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import './App.css'
+import TopBar from './components/TopBar/TopBar';
+
+//import Header from './components/Header/HeaderBar'
+import MainDashboard from './components/Dashboard/MainDashboard'
+// import HomePage from './components/Home/HomePage.js'
+import HomePage from "./components/Home/HomePage"
+import {SignUp} from './components/Home/SignUp'
+import {LogIn} from './components/Home/LogIn'
+import { BrowserRouter,Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1>Hello from Amplify</h1>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+ 
+   <BrowserRouter>
+           <TopBar />
+
+      <Routes>
+        <Route path="shopAlert/" element={<HomePage />} />
+
+        <Route path="shopAlert/dashboard" element={<MainDashboard />} />
+        <Route path="shopAlert/signup" element={<SignUp />} />
+        <Route path="shopAlert/login" element={<LogIn />} />
+          </Routes>
+      {/* </Header> */}
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
