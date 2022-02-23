@@ -1,44 +1,28 @@
-import { PriceDropTable } from '../Tables/PriceDropTable/PriceDrop'
-import { RestockTable } from '../Tables/RestockTable/Restock'
-import './MainDashboard.css'
-import InsertItemPopup from "../Popups/InsertItemPopup"
-import ItemInfoPopup from '../Popups/ItemInfoPopup'
-import { useState } from 'react'
-import SideBar from "../SideBar/SideBar"
-import NotifBar from '../SideBar/NotifBar'
-import TopBar from '../TopBar/TopBar'
+import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import { listBlogs } from '../../graphql/queries';
+import { useState } from 'react';
+import { useEffect } from 'react';
 function MainDashboard() {
-    // state variables for item selection and info popups
-    const [insertItemPopup, setinsertItemPopup] = useState(false)
-    const [itemInfoPopup, setItemInfoPopup] = useState(false)
+    // This initializes the blogs to an empty array. 
+    const [blogs, setBlogs] = useState([]);
 
+    // This tells the app to run fetchBlogs everytime this is rendered
+    // Problem: fetchBlogs updates states which renders the page. This will result in infinite loop
+    // Soln: Add a second parameter to indicate this should only happen once
+    useEffect(() => {
+        fetchBlogs();
+    }, []);
+    const fetchBlogs = async () => {
+        try {
+            const blogData = await API.graphql(graphqlOperation(listBlogs));
+            const blogList = blogData.data.listBlogs.items;
+            console.log('blog list', blogList);
+        } catch (error) {
+            console.log('error on fetching blogs', error);
+        }
+    };
     return (
         <div>
-  
-        <div className ="sideBarRow">
-
-          <NotifBar />   
-        <div className='main_dashboard'>
-            <h1 align="left" className='user'>
-                Hello Bob!
-            </h1>
-            <div className='table'>
-                <p className='table_title'>My Price Drop List
-                    <button className='add_item' onClick={() => setinsertItemPopup(true)}>Add Item</button>
-                </p>
-                <PriceDropTable />
-            </div>
-            <div className='table'>
-                <p className='table_title'>My Restock Watch List
-                    <button className='add_item' onClick={() => setinsertItemPopup(true)}>Add Item</button>
-                </p>
-                <RestockTable />
-            </div>
-            {/* Item Selection and Info Popups */}
-            <InsertItemPopup triggerInsertItem={insertItemPopup} setTriggerInsertItem={setinsertItemPopup} setTriggerItemInfo={setItemInfoPopup}></InsertItemPopup>
-            <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup}></ItemInfoPopup>
-        </div>
-        </div>
         </div>
     )
 }

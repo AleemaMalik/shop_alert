@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-shopalert-dev-222217-authRole",
+      "UnauthRoleArn": "arn:aws:iam::795292914926:role/amplify-shopalert-dev-222217-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::795292914926:role/amplify-shopalert-dev-222217-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-shopalert-dev-222217-deployment",
+      "UnauthRoleName": "amplify-shopalert-dev-222217-unauthRole",
+      "StackName": "amplify-shopalert-dev-222217",
+      "StackId": "arn:aws:cloudformation:us-east-1:795292914926:stack/amplify-shopalert-dev-222217/cef1c720-9457-11ec-af5c-12fe024ee3ad",
+      "AmplifyAppId": "d3swcp6ja309dk"
+    }
+  }
+}
