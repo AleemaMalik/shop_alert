@@ -1,28 +1,63 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getBlog = /* GraphQL */ `
-  query GetBlog($id: ID!) {
-    getBlog(id: $id) {
+export const getPriceDropItem = /* GraphQL */ `
+  query GetPriceDropItem($id: ID!) {
+    getPriceDropItem(id: $id) {
       id
-      name
-      posts
+      storeName
+      itemName
+      initialPrice
+      currentPrice
       createdAt
       updatedAt
     }
   }
 `;
-export const listBlogs = /* GraphQL */ `
-  query ListBlogs(
-    $filter: ModelBlogFilterInput
+export const listPriceDropItems = /* GraphQL */ `
+  query ListPriceDropItems(
+    $filter: ModelPriceDropItemFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listPriceDropItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
-        posts
+        storeName
+        itemName
+        initialPrice
+        currentPrice
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getRestockItem = /* GraphQL */ `
+  query GetRestockItem($id: ID!) {
+    getRestockItem(id: $id) {
+      id
+      storeName
+      itemName
+      inStock
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listRestockItems = /* GraphQL */ `
+  query ListRestockItems(
+    $filter: ModelRestockItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRestockItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        storeName
+        itemName
+        inStock
         createdAt
         updatedAt
       }

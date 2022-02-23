@@ -1,34 +1,76 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateBlog = /* GraphQL */ `
-  subscription OnCreateBlog {
-    onCreateBlog {
+export const onCreatePriceDropItem = /* GraphQL */ `
+  subscription OnCreatePriceDropItem {
+    onCreatePriceDropItem {
       id
-      name
-      posts
+      storeName
+      itemName
+      initialPrice
+      currentPrice
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateBlog = /* GraphQL */ `
-  subscription OnUpdateBlog {
-    onUpdateBlog {
+export const onUpdatePriceDropItem = /* GraphQL */ `
+  subscription OnUpdatePriceDropItem {
+    onUpdatePriceDropItem {
       id
-      name
-      posts
+      storeName
+      itemName
+      initialPrice
+      currentPrice
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteBlog = /* GraphQL */ `
-  subscription OnDeleteBlog {
-    onDeleteBlog {
+export const onDeletePriceDropItem = /* GraphQL */ `
+  subscription OnDeletePriceDropItem {
+    onDeletePriceDropItem {
       id
-      name
-      posts
+      storeName
+      itemName
+      initialPrice
+      currentPrice
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateRestockItem = /* GraphQL */ `
+  subscription OnCreateRestockItem {
+    onCreateRestockItem {
+      id
+      storeName
+      itemName
+      inStock
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateRestockItem = /* GraphQL */ `
+  subscription OnUpdateRestockItem {
+    onUpdateRestockItem {
+      id
+      storeName
+      itemName
+      inStock
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteRestockItem = /* GraphQL */ `
+  subscription OnDeleteRestockItem {
+    onDeleteRestockItem {
+      id
+      storeName
+      itemName
+      inStock
       createdAt
       updatedAt
     }

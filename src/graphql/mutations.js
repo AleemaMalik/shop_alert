@@ -1,43 +1,94 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createBlog = /* GraphQL */ `
-  mutation CreateBlog(
-    $input: CreateBlogInput!
-    $condition: ModelBlogConditionInput
+export const createPriceDropItem = /* GraphQL */ `
+  mutation CreatePriceDropItem(
+    $input: CreatePriceDropItemInput!
+    $condition: ModelPriceDropItemConditionInput
   ) {
-    createBlog(input: $input, condition: $condition) {
+    createPriceDropItem(input: $input, condition: $condition) {
       id
-      name
-      posts
+      storeName
+      itemName
+      initialPrice
+      currentPrice
       createdAt
       updatedAt
     }
   }
 `;
-export const updateBlog = /* GraphQL */ `
-  mutation UpdateBlog(
-    $input: UpdateBlogInput!
-    $condition: ModelBlogConditionInput
+export const updatePriceDropItem = /* GraphQL */ `
+  mutation UpdatePriceDropItem(
+    $input: UpdatePriceDropItemInput!
+    $condition: ModelPriceDropItemConditionInput
   ) {
-    updateBlog(input: $input, condition: $condition) {
+    updatePriceDropItem(input: $input, condition: $condition) {
       id
-      name
-      posts
+      storeName
+      itemName
+      initialPrice
+      currentPrice
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteBlog = /* GraphQL */ `
-  mutation DeleteBlog(
-    $input: DeleteBlogInput!
-    $condition: ModelBlogConditionInput
+export const deletePriceDropItem = /* GraphQL */ `
+  mutation DeletePriceDropItem(
+    $input: DeletePriceDropItemInput!
+    $condition: ModelPriceDropItemConditionInput
   ) {
-    deleteBlog(input: $input, condition: $condition) {
+    deletePriceDropItem(input: $input, condition: $condition) {
       id
-      name
-      posts
+      storeName
+      itemName
+      initialPrice
+      currentPrice
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createRestockItem = /* GraphQL */ `
+  mutation CreateRestockItem(
+    $input: CreateRestockItemInput!
+    $condition: ModelRestockItemConditionInput
+  ) {
+    createRestockItem(input: $input, condition: $condition) {
+      id
+      storeName
+      itemName
+      inStock
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateRestockItem = /* GraphQL */ `
+  mutation UpdateRestockItem(
+    $input: UpdateRestockItemInput!
+    $condition: ModelRestockItemConditionInput
+  ) {
+    updateRestockItem(input: $input, condition: $condition) {
+      id
+      storeName
+      itemName
+      inStock
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteRestockItem = /* GraphQL */ `
+  mutation DeleteRestockItem(
+    $input: DeleteRestockItemInput!
+    $condition: ModelRestockItemConditionInput
+  ) {
+    deleteRestockItem(input: $input, condition: $condition) {
+      id
+      storeName
+      itemName
+      inStock
       createdAt
       updatedAt
     }
