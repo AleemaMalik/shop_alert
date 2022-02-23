@@ -7,7 +7,7 @@ function MainDashboard() {
     const [priceDropItems, setPriceDropItems] = useState([]);
     const [restockItems, setRestockItems] = useState([]);
 
-    // This tells the app to run fetchPriceDropItems everytime this is rendered
+    // This tells the app to run fetchPriceDropItems everytime MainDashboard.js is rendered
     // Problem: fetchPriceDropItems updates states which renders the page. This will result in infinite loop
     // Soln: Add a second parameter to indicate this should only happen once
     useEffect(() => {
