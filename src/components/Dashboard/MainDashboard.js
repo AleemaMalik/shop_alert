@@ -1,44 +1,53 @@
-import { PriceDropTable } from '../Tables/PriceDropTable/PriceDrop'
-import { RestockTable } from '../Tables/RestockTable/Restock'
-import './MainDashboard.css'
-import InsertItemPopup from "../Popups/InsertItemPopup"
-import ItemInfoPopup from '../Popups/ItemInfoPopup'
-import { useState } from 'react'
-import SideBar from "../SideBar/SideBar"
-import NotifBar from '../SideBar/NotifBar'
-import TopBar from '../TopBar/TopBar'
+import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import { listPriceDropItems, listRestockItems } from '../../graphql/queries';
+import { useState } from 'react';
+import { useEffect } from 'react';
 function MainDashboard() {
-    // state variables for item selection and info popups
-    const [insertItemPopup, setinsertItemPopup] = useState(false)
-    const [itemInfoPopup, setItemInfoPopup] = useState(false)
+    // This initializes the blogs to an empty array. 
+    const [priceDropItems, setPriceDropItems] = useState([]);
+    const [restockItems, setRestockItems] = useState([]);
 
+    // This tells the app to run fetchPriceDropItems everytime MainDashboard.js is rendered
+    // Problem: fetchPriceDropItems updates states which renders the page. This will result in infinite loop
+    // Soln: Add a second parameter to indicate this should only happen once
+    useEffect(() => {
+        fetchPriceDropItems();
+        fetchRestockItems();
+    }, []);
+    const fetchPriceDropItems = async () => {
+        try {
+            // Call the graphQL API to get all price drop items from DynamoDB
+            const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
+            // Extract the items
+            const priceDropList = priceDropData.data.listPriceDropItems.items;
+            console.log('price drop item list', priceDropList);
+            // Update the priceDropList object
+            setPriceDropItems(priceDropList)
+        } catch (error) {
+            console.log('error on fetching price drop items', error);
+        }
+    };
+    const fetchRestockItems = async () => {
+        try {
+            const restockData = await API.graphql(graphqlOperation(listRestockItems));
+            const restockList = restockData.data.listRestockItems.items;
+            console.log('restock list', restockList);
+            setRestockItems(restockList)
+        } catch (error) {
+            console.log('error on fetching price drop items', error);
+        }
+    };
+    // In the return block you need to format the data stored in the useState hooks to populate react tables on the frontend
     return (
-        <div>
-  
-        <div className ="sideBarRow">
+        <div>   
+            {restockItems[0].itemName}
+            {restockItems[0].storeName}
+            {restockItems[0].inStock}
 
-          <NotifBar />   
-        <div className='main_dashboard'>
-            <h1 align="left" className='user'>
-                Hello Bob!
-            </h1>
-            <div className='table'>
-                <p className='table_title'>My Price Drop List
-                    <button className='add_item' onClick={() => setinsertItemPopup(true)}>Add Item</button>
-                </p>
-                <PriceDropTable />
-            </div>
-            <div className='table'>
-                <p className='table_title'>My Restock Watch List
-                    <button className='add_item' onClick={() => setinsertItemPopup(true)}>Add Item</button>
-                </p>
-                <RestockTable />
-            </div>
-            {/* Item Selection and Info Popups */}
-            <InsertItemPopup triggerInsertItem={insertItemPopup} setTriggerInsertItem={setinsertItemPopup} setTriggerItemInfo={setItemInfoPopup}></InsertItemPopup>
-            <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup}></ItemInfoPopup>
-        </div>
-        </div>
+            {priceDropItems[0].itemName}
+            {priceDropItems[0].storeName}
+            {priceDropItems[0].initialPrice}
+            {priceDropItems[0].currentPrice}
         </div>
     )
 }

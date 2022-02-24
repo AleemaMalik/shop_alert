@@ -1,6 +1,8 @@
 import React from 'react'
 import './App.css'
 import TopBar from './components/TopBar/TopBar';
+import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import awsconfig from './aws-exports';
 
 
 //import Header from './components/Header/HeaderBar'
@@ -12,7 +14,7 @@ import {LogIn} from './components/Home/LogIn'
 import { BrowserRouter,Routes, Route } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 
-
+Amplify.configure(awsconfig);
 function App() {
   return (
  
