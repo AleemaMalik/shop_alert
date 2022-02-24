@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "baharehdev",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "C:\\Users\\bahar\\OneDrive\\Desktop\\UofT\\4th Year\\Sem 2\\ECE496\\code\\shopAlert official\\shop_alert\\amplify\\backend\\api\\baharehdev\\schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 7
+    }
+  }
+}

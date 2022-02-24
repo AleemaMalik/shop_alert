@@ -1,0 +1,5 @@
+{
+  "AppSyncApiName": "baharehdev",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false
+}
