@@ -1,11 +1,22 @@
+//import React from 'react'
+import { createPriceDropItem, updatePriceDropItem, deletePriceDropItem } from '../../graphql/mutations'
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import { useState, useEffect } from 'react'
 import { listPriceDropItems, listRestockItems } from '../../graphql/queries';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
+
+const initialFormState = { storeName: '', itemName: '', initialPrice: '', currentPrice: '' }
+
+
 function MainDashboard() {
+
+
+    //////////////////////////////////////////////////////
+
     // This initializes the blogs to an empty array. 
     const [priceDropItems, setPriceDropItems] = useState([]);
     const [restockItems, setRestockItems] = useState([]);
+    const [formData, setFormData] = useState({});
 
     // This tells the app to run fetchPriceDropItems everytime MainDashboard.js is rendered
     // Problem: fetchPriceDropItems updates states which renders the page. This will result in infinite loop
@@ -37,18 +48,99 @@ function MainDashboard() {
             console.log('error on fetching price drop items', error);
         }
     };
-    // In the return block you need to format the data stored in the useState hooks to populate react tables on the frontend
-    return (
-        <div>   
-            {restockItems[0].itemName}
-            {restockItems[0].storeName}
-            {restockItems[0].inStock}
 
-            {priceDropItems[0].itemName}
-            {priceDropItems[0].storeName}
-            {priceDropItems[0].initialPrice}
-            {priceDropItems[0].currentPrice}
+
+    const createPDItem = async () => {
+        console.log('formData', formData);
+        const { storeName, itemName, initialPrice, currentPrice } = formData;
+        const createNewPDItem = {
+            id: uuid(),
+            storeName,
+            itemName,
+            initialPrice,
+            currentPrice
+        }
+        //need to upload to dynamoDB, graphqlOperations takes query and variable
+        await API.graphql(graphqlOperation(createPriceDropItem, { input: createNewPDItem }));
+
+        // if(!formData.storee || !formData.iteme || !formData.currentPricee || !formData.initialPricee)
+        // return;
+        // const priceDropData = await API.graphql(graphqlOperation(createPriceDropItem, {input: formData}));
+
+        // await API.graphql({ query: createPriceDropItem, variables: { input : formData}});
+        // setPriceDropItems([...priceDropItems, formData]);
+        // setFormData(initialFormState);  
+    };
+
+    // async function deletePDItem({id}){
+    //     const newPDItemArray = priceDropItemData.filter(note => note.id !== id);
+    //     setPriceDropItemData(newPDItemArray);
+    //     await API.graphql({ query: deletePriceDropItem, variables: { input: {id}}});
+    // };
+
+    return (
+
+        <div className="App">
+            <input
+                onChange={e => setFormData({ ...formData, storeName: e.target.value })}
+                placeholder="Store"
+                value={formData.storeName}
+            />
+            <input
+                onChange={e => setFormData({ ...formData, itemName: e.target.value })}
+                placeholder="Item name"
+                value={formData.itemName}
+            />
+            <input
+                onChange={e => setFormData({ ...formData, initialPrice: e.target.value })}
+                placeholder="Start price"
+                value={formData.initialPrice}
+            />
+            <input
+                onChange={e => setFormData({ ...formData, currentPrice: e.target.value })}
+                placeholder="Current Price"
+                value={formData.currentPrice}
+            />
+            <button onClick={createPDItem}> Create Item</button>
+            {/* <div style={{marginBottom:30}}>
+            {  
+            priceDropItemData.map(note => (
+                <div key={note.id}>
+                    <h2>{note.iteme}</h2>
+                    <p>{note.storee}</p>
+                    <h5>{note.currentPricee}</h5>
+                    <h5>{note.initialPricee}</h5>
+                    <button onClick={() => deletePDItem(note)}> Delete Item</button>
+                    </div>
+            ))
+            
+            }
+          
+
+            </div> */}
+            {/* <table>
+               <thead>
+                   <tr>
+                    <th> id</th>
+                    <th>store</th>
+                    <th>Item</th>
+                    <th>initial price</th>
+                    <th>current price</th>
+                       </tr>
+                   </thead> 
+
+
+                   <tr>
+
+                   </tr>
+                
+            </table>    */}
+
+
         </div>
     )
 }
+
+
+
 export default MainDashboard;
