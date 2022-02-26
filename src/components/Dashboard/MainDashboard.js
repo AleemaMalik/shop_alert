@@ -56,15 +56,21 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
+const headCellsPriceDrop = [
     { id: 'itemName', numeric: false, disablePadding: true, label: 'Item Name' },
     { id: 'storeName', numeric: false, disablePadding: false, label: 'Store Name' },
     { id: 'initialPrice', numeric: true, disablePadding: false, label: 'Initial Price' },
     { id: 'currentPrice', numeric: true, disablePadding: false, label: 'Current Price' },
 ];
 
+const headCellsBackInStock = [
+    { id: 'itemName', numeric: false, disablePadding: true, label: 'Item Name' },
+    { id: 'storeName', numeric: false, disablePadding: false, label: 'Store Name' },
+    { id: 'inStock', numeric: false, disablePadding: false, label: 'In Stock' },
+];
 
-function EnhancedTableHead(props) {
+
+function EnhancedTableHeadPriceDrops(props) {
     const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -81,7 +87,7 @@ function EnhancedTableHead(props) {
                         inputProps={{ 'aria-label': 'select all desserts' }}
                     />
                 </TableCell>
-                {headCells.map((headCell) => (
+                {headCellsPriceDrop.map((headCell) => (
                     <TableCell
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
@@ -107,7 +113,61 @@ function EnhancedTableHead(props) {
     );
 }
 
-EnhancedTableHead.propTypes = {
+EnhancedTableHeadPriceDrops.propTypes = {
+    classes: PropTypes.object.isRequired,
+    numSelected: PropTypes.number.isRequired,
+    onRequestSort: PropTypes.func.isRequired,
+    onSelectAllClick: PropTypes.func.isRequired,
+    order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+    orderBy: PropTypes.string.isRequired,
+    rowCount: PropTypes.number.isRequired,
+};
+
+
+function EnhancedTableHeadBackInStock(props) {
+    const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+    const createSortHandler = (property) => (event) => {
+        onRequestSort(event, property);
+    };
+
+    return (
+        <TableHead>
+            <TableRow>
+                <TableCell padding="checkbox">
+                    <Checkbox
+                        indeterminate={numSelected > 0 && numSelected < rowCount}
+                        checked={rowCount > 0 && numSelected === rowCount}
+                        onChange={onSelectAllClick}
+                        inputProps={{ 'aria-label': 'select all desserts' }}
+                    />
+                </TableCell>
+                {headCellsBackInStock.map((headCell) => (
+                    <TableCell
+                        key={headCell.id}
+                        align={headCell.numeric ? 'right' : 'left'}
+                        padding={headCell.disablePadding ? 'none' : 'normal'}
+                        sortDirection={orderBy === headCell.id ? order : false}
+                    >
+                        <TableSortLabel
+                            active={orderBy === headCell.id}
+                            direction={orderBy === headCell.id ? order : 'asc'}
+                            onClick={createSortHandler(headCell.id)}
+                        >
+                            {headCell.label}
+                            {orderBy === headCell.id ? (
+                                <span className={classes.visuallyHidden}>
+                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                </span>
+                            ) : null}
+                        </TableSortLabel>
+                    </TableCell>
+                ))}
+            </TableRow>
+        </TableHead>
+    );
+}
+
+EnhancedTableHeadBackInStock.propTypes = {
     classes: PropTypes.object.isRequired,
     numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
@@ -292,9 +352,18 @@ function MainDashboard() {
         setOrderBy(property);
     };
 
-    const handleSelectAllClick = (event) => {
+    const handleSelectAllClickPriceDrop = (event) => {
         if (event.target.checked) {
             const newSelecteds = priceDropItems.map((n) => n.itemName);
+            setSelected(newSelecteds);
+            return;
+        }
+        setSelected([]);
+    };
+
+    const handleSelectAllClickBackInStock = (event) => {
+        if (event.target.checked) {
+            const newSelecteds = restockItems.map((n) => n.itemName);
             setSelected(newSelecteds);
             return;
         }
@@ -337,7 +406,8 @@ function MainDashboard() {
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, priceDropItems.length - page * rowsPerPage);
+    const emptyRowsPriceDrop = rowsPerPage - Math.min(rowsPerPage, priceDropItems.length - page * rowsPerPage);
+    const emptyRowsBackInStock = rowsPerPage - Math.min(rowsPerPage, restockItems.length - page * rowsPerPage);
 
     return (
 
@@ -408,12 +478,12 @@ function MainDashboard() {
                             size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table"
                         >
-                            <EnhancedTableHead
+                            <EnhancedTableHeadPriceDrops
                                 classes={classes}
                                 numSelected={selected.length}
                                 order={order}
                                 orderBy={orderBy}
-                                onSelectAllClick={handleSelectAllClick}
+                                onSelectAllClick={handleSelectAllClickPriceDrop}
                                 onRequestSort={handleRequestSort}
                                 rowCount={priceDropItems.length}
                             />
@@ -450,8 +520,8 @@ function MainDashboard() {
                                             </TableRow>
                                         );
                                     })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                                {emptyRowsPriceDrop > 0 && (
+                                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRowsPriceDrop }}>
                                         <TableCell colSpan={6} />
                                     </TableRow>
                                 )}
@@ -462,6 +532,83 @@ function MainDashboard() {
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
                         count={priceDropItems.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
+                <FormControlLabel
+                    control={<Switch checked={dense} onChange={handleChangeDense} />}
+                    label="Dense padding"
+                />
+
+            </div>
+
+
+            <div className={classes.root}>
+                <Paper className={classes.paper}>
+                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <TableContainer>
+                        <Table
+                            className={classes.table}
+                            aria-labelledby="tableTitle"
+                            size={dense ? 'small' : 'medium'}
+                            aria-label="enhanced table"
+                        >
+                            <EnhancedTableHeadBackInStock
+                                classes={classes}
+                                numSelected={selected.length}
+                                order={order}
+                                orderBy={orderBy}
+                                onSelectAllClick={handleSelectAllClickBackInStock}
+                                onRequestSort={handleRequestSort}
+                                rowCount={restockItems.length}
+                            />
+                            <TableBody>
+                                {stableSort(restockItems, getComparator(order, orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row, index) => {
+                                        const isItemSelected = isSelected(row.name);
+                                        const labelId = `enhanced-table-checkbox-${index}`;
+
+                                        return (
+                                            <TableRow
+                                                hover
+                                                onClick={(event) => handleClick(event, row.name)}
+                                                role="checkbox"
+                                                aria-checked={isItemSelected}
+                                                tabIndex={-1}
+                                                key={row.name}
+                                                selected={isItemSelected}
+                                            >
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox
+                                                        checked={isItemSelected}
+                                                        inputProps={{ 'aria-labelledby': labelId }}
+                                                    />
+                                                </TableCell>
+                                                <TableCell component="th" id={labelId} scope="row" padding="none">
+                                                    {row.itemName}
+                                                </TableCell>
+                                                {/* <TableCell align="right">{row.itemName}</TableCell> */}
+                                                <TableCell align="right">{row.storeName}</TableCell>
+                                                <TableCell align="right">{row.inStock}</TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                {emptyRowsBackInStock > 0 && (
+                                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRowsBackInStock }}>
+                                        <TableCell colSpan={6} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={restockItems.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
