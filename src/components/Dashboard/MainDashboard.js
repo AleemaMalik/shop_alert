@@ -4,8 +4,11 @@ import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import { useState, useEffect } from 'react'
 import { listPriceDropItems, listRestockItems } from '../../graphql/queries';
 import { v4 as uuid } from 'uuid';
+import { Paper, IconButton } from "@material-ui/core";
+import "./MainDashboard.css"
 
 const initialFormState = { storeName: '', itemName: '', initialPrice: '', currentPrice: '' }
+
 
 
 function MainDashboard() {
@@ -135,7 +138,42 @@ function MainDashboard() {
                    </tr>
                 
             </table>    */}
+            <div className="PriceDropColLabels">
+                <text>Store Name&nbsp;</text>
+                <text>Item Name&nbsp;</text>
+                <text>Initial Price&nbsp;</text>
+                <text>Current Price&nbsp;</text>
+                
+            </div>
 
+            <div className="itemList">
+                {
+
+                    priceDropItems.map(priceDropItem => {
+                        return (
+                            <Paper variant="outlined" evaluation={2}>
+
+
+                                {/* <IconButton aria-label="delete">
+                                        <DeleteIcon />
+
+                                    </IconButton> */}
+
+                                <div className="itemCard">
+                                    <div className='StoreName'>{priceDropItem.storeName}</div>
+                                    <div className='ItemName'>{priceDropItem.itemName}</div>
+                                    <div className='InitialPrice'>{priceDropItem.initialPrice}</div>
+                                    <div className='CurrentPrice'>{priceDropItem.currentPrice}</div>
+                                </div>
+
+
+
+                            </Paper>
+                        )
+                    })
+                }
+
+            </div>
 
         </div>
     )
