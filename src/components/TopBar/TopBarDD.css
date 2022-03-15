@@ -4,6 +4,8 @@
   height: auto;
   width: 200px;
   background: #373e98;
+  z-index: 1;
+  border: solid 1.2px #0d114b;
 }
 
 .NotificationBar .NotifSearchBar {

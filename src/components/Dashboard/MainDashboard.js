@@ -472,6 +472,8 @@ function MainDashboard() {
                 <Paper className={classes.paper}>
                     <EnhancedTableToolbar numSelected={selected.length} />
                     <TableContainer>
+                    <button className='add_item'>Add item</button>
+
                         <Table
                             className={classes.table}
                             aria-labelledby="tableTitle"
@@ -550,12 +552,14 @@ function MainDashboard() {
                 <Paper className={classes.paper}>
                     <EnhancedTableToolbar numSelected={selected.length} />
                     <TableContainer>
+                    <button className='add_item'>Add item</button>
                         <Table
                             className={classes.table}
                             aria-labelledby="tableTitle"
                             size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table"
-                        >
+                            >
+                            
                             <EnhancedTableHeadBackInStock
                                 classes={classes}
                                 numSelected={selected.length}

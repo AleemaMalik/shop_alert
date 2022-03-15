@@ -20,7 +20,31 @@
   width: 75%;
 }
 .add_item {
+  padding: 6px;
+  margin-bottom: 8px;
+  /* background-color: #f16775; */
+  /* padding: 6px 18px; */
+  /* height: 42%; */
+  height: 36px;
+  /* background-color: #f16775; */
+  border-radius: 25px;
   float: right;
+  width: 10%;
+  border: solid 1px #c6c6c7;
+}
+
+.add_item:hover {
+  /* background-color: #f16775; */
+  /* padding: 6px 18px; */
+  /* height: 42%; */
+  /* background-color: #f16775; */
+  border-radius: 25px;
+  transition: all 0.2s ease-out;
+  float: right;
+  width: 10%;
+  border: solid 1px;
+  background-color: #dadadd;
+  border: solid 1px #b2b2b3;
 }
 .sideBarRow {
   display: flex;
