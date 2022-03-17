@@ -6,7 +6,7 @@ import { listPriceDropItems, listRestockItems } from '../../graphql/queries';
 import { v4 as uuid } from 'uuid';
 import { Paper, IconButton } from "@material-ui/core";
 import "./MainDashboard.css"
-
+import { Auth } from 'aws-amplify';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -286,6 +286,7 @@ function MainDashboard() {
     }, []);
     const fetchPriceDropItems = async () => {
         try {
+            Auth.currentAuthenticatedUser().then(console.log)
             // Call the graphQL API to get all price drop items from DynamoDB
             const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
             // Extract the items
@@ -307,13 +308,14 @@ function MainDashboard() {
             console.log('error on fetching price drop items', error);
         }
     };
-
+    
 
     const createPDItem = async () => {
         console.log('formData', formData);
         const { storeName, itemName, initialPrice, currentPrice } = formData;
         const createNewPDItem = {
             id: uuid(),
+            username: "454359e3-344a-43b8-9153-a58f3cbd6c98",
             storeName,
             itemName,
             initialPrice,
@@ -410,7 +412,6 @@ function MainDashboard() {
     const emptyRowsBackInStock = rowsPerPage - Math.min(rowsPerPage, restockItems.length - page * rowsPerPage);
 
     return (
-
         <div className="App">
             <input
                 onChange={e => setFormData({ ...formData, storeName: e.target.value })}

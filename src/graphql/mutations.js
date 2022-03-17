@@ -8,6 +8,7 @@ export const createPriceDropItem = /* GraphQL */ `
   ) {
     createPriceDropItem(input: $input, condition: $condition) {
       id
+      username
       storeName
       itemName
       initialPrice
@@ -24,6 +25,7 @@ export const updatePriceDropItem = /* GraphQL */ `
   ) {
     updatePriceDropItem(input: $input, condition: $condition) {
       id
+      username
       storeName
       itemName
       initialPrice
@@ -40,6 +42,7 @@ export const deletePriceDropItem = /* GraphQL */ `
   ) {
     deletePriceDropItem(input: $input, condition: $condition) {
       id
+      username
       storeName
       itemName
       initialPrice
@@ -56,6 +59,7 @@ export const createRestockItem = /* GraphQL */ `
   ) {
     createRestockItem(input: $input, condition: $condition) {
       id
+      username
       storeName
       itemName
       inStock
@@ -71,6 +75,7 @@ export const updateRestockItem = /* GraphQL */ `
   ) {
     updateRestockItem(input: $input, condition: $condition) {
       id
+      username
       storeName
       itemName
       inStock
@@ -86,6 +91,7 @@ export const deleteRestockItem = /* GraphQL */ `
   ) {
     deleteRestockItem(input: $input, condition: $condition) {
       id
+      username
       storeName
       itemName
       inStock
