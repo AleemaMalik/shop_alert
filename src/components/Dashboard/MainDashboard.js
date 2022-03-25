@@ -27,6 +27,11 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
+
 const initialFormState = { storeName: '', itemName: '', initialPrice: '', currentPrice: '' }
 
 
@@ -267,7 +272,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 
+
 function MainDashboard() {
+
 
 
     //////////////////////////////////////////////////////
@@ -276,6 +283,21 @@ function MainDashboard() {
     const [priceDropItems, setPriceDropItems] = useState([]);
     const [restockItems, setRestockItems] = useState([]);
     const [formData, setFormData] = useState({});
+
+    const [notifications, setNotifications] = useState([]);
+
+    const notifyPriceDrop = () => {
+        toast('Price Drop Notification');	
+        notifications[notifications.length] = 'Price Drop Notification';
+        setNotifications( notifications );
+        console.log(notifications);
+    }
+    const notifyBackInStock = () => {
+        toast('Back In Stock Notification');
+        notifications[notifications.length] = 'Back In Stock Notification';
+        setNotifications( notifications );
+        console.log(notifications);
+    }
 
     // This tells the app to run fetchPriceDropItems everytime MainDashboard.js is rendered
     // Problem: fetchPriceDropItems updates states which renders the page. This will result in infinite loop
@@ -309,6 +331,7 @@ function MainDashboard() {
         }
     };
     
+
 
     const createPDItem = async () => {
         console.log('formData', formData);
@@ -413,6 +436,8 @@ function MainDashboard() {
 
     return (
         <div className="App">
+            <button onClick={notifyPriceDrop}>Notify Price Drop!</button>
+            <button onClick={notifyBackInStock}>Notify Back In Stock!</button>
             <input
                 onChange={e => setFormData({ ...formData, storeName: e.target.value })}
                 placeholder="Store"

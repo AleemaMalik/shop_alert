@@ -56,6 +56,16 @@ const TopBar = ()=>{
                 </Link>
                 {dropdown && <TopBarDD/>}
             </li>
+
+            <li className = 'nav-item'
+                
+            >
+                <Link to ='/' className='nav-links' onClick={closeMobileMenu}>
+                   Notifications <i className ='fas fa-caret-down'/>
+                </Link>
+                
+            </li>
+
             <li className = 'nav-item'>
                 
                 <Link to ="about" className='nav-links' onClick={closeMobileMenu}>

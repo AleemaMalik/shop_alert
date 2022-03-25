@@ -7,7 +7,11 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "auth": {
+<<<<<<< HEAD
         "shopalerteb6c101f": {
+=======
+        "shopalert": {
+>>>>>>> changes for notification popup
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",
