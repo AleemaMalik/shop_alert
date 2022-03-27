@@ -4,6 +4,7 @@ input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONL
 
 type PriceDropItem @model {
   id: ID!
+  username: String!
   storeName: String!
   itemName: String!
   initialPrice: Int!
@@ -12,6 +13,7 @@ type PriceDropItem @model {
 
 type RestockItem @model {
   id: ID!
+  username: String!
   storeName: String!
   itemName: String!
   inStock: String!

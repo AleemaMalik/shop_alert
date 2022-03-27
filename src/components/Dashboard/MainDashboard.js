@@ -9,6 +9,7 @@ import "./MainDashboard.css";
 
 import InsertItemPopup from "../Popups/InsertItemPopup";
 import ItemInfoPopup from "../Popups/ItemInfoPopup";
+import ItemSearchResultPopup from "../Popups/ItemSearchResultPopup";
 
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -304,6 +305,7 @@ function MainDashboard() {
   //state variables for item selection and info popups
   const [insertItemPopup, setinsertItemPopup] = useState(false);
   const [itemInfoPopup, setItemInfoPopup] = useState(false);
+  const [itemInfoPopup2, setItemInfoPopup2] = useState(false);
 
   const classes = useStyles();
   const [order, setOrder] = useState("asc");
@@ -533,8 +535,13 @@ function MainDashboard() {
         <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
       </div>
       {/* Item Selection and Info Popups */}
-      <InsertItemPopup triggerInsertItem={insertItemPopup} setTriggerInsertItem={setinsertItemPopup} setTriggerItemInfo={setItemInfoPopup}></InsertItemPopup>
+      <InsertItemPopup triggerInsertItem={insertItemPopup} setTriggerInsertItem={setinsertItemPopup} setTriggerItemInfo={setItemInfoPopup} setTriggerItemInfo2={setItemInfoPopup2}></InsertItemPopup>
       <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup}></ItemInfoPopup>
+      <ItemSearchResultPopup triggerInfoPopup2={itemInfoPopup2} setTriggeritemInfo2={setItemInfoPopup2}></ItemSearchResultPopup>
+
+      {/* <ItemSearchResultPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup}></ItemSearchResultPopup> */}
+
+
     </div>
   );
 }

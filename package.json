@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.5.9",
+    "@aws-amplify/ui-react": "^2.11.0",
     "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
@@ -13,7 +14,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "apollo-server": "^3.6.3",
-    "aws-amplify": "^4.3.14",
+    "aws-amplify": "^4.3.17",
     "axios": "^0.26.0",
     "clsx": "^1.1.1",
     "graphql": "^16.3.0",
