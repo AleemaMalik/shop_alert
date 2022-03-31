@@ -37,7 +37,7 @@ return (props.triggerInfoPopup2) ? (
     <div className="item-dropdown">
                 {ScraperData.map((val, key) => { 
                     return (
-                        <button className = "row" key={key}>
+                        <button className = "dropdown-row" key={key}>
                             <div className="image-url"><img style={{width:50,height:50}} src={val.imageURL} resizeMode='contain' alt="display image"/></div>                          
                             <div className = "item-properties">
                             <div className ="item-name">{val.name}</div>
