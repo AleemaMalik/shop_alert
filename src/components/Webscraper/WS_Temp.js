@@ -1,6 +1,6 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-
+const CronJob = require('cron'.CronJob)
 
 class WebScraper {
   //html element locators
