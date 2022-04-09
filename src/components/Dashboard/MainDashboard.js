@@ -10,6 +10,8 @@ import "./MainDashboard.css";
 import InsertItemPopup from "../Popups/InsertItemPopup";
 import ItemInfoPopup from "../Popups/ItemInfoPopup";
 import ItemSearchResultPopup from "../Popups/ItemSearchResultPopup";
+import WebScraper from "../WebScraper/WebScraper";
+import { defaultScraperData } from "../Popups/ScraperData";
 
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -305,7 +307,59 @@ function MainDashboard() {
   //state variables for item selection and info popups
   const [insertItemPopup, setinsertItemPopup] = useState(false);
   const [itemInfoPopup, setItemInfoPopup] = useState(false);
-  const [itemInfoPopup2, setItemInfoPopup2] = useState(false);
+  const [itemSearchResultPopup, setItemSearchResultPopup] = useState(false);
+
+  //state variable for the item URL of the item to be added
+  const [itemURL, setItemURL] = useState("");
+
+  //state variable for the search string + ecommerce website
+  const [searchValue, setSearchValue] = useState({
+    searchString: "",
+    enteredEcommerceSite: "",
+  });
+
+  //state variable containing list of item search results
+  const [searchResults, setSearchResults] = useState(defaultScraperData);
+
+  //default Item Info displayed (displayed while actual info is loading HTTP result)
+  const defaultItemInfo = {
+    name: "Loading...",
+    price: {},
+    imageURL: "src/components/Popups/images/itemImage.png",
+    site: "",
+    stock: false,
+    productID: "",
+    options: {},
+    URL: "",
+  };
+
+  //state variable for item info to be displaye in item info popup
+  const [itemInfo, setItemInfo] = useState(defaultItemInfo);
+
+  //everytime a URL is entered, get the corresponding item info and update state
+  useEffect(() => {
+    let scraper = new WebScraper();
+    scraper.getInfoFromURL(itemURL).then((info) => {
+      setItemInfo({
+        name: info.name,
+        price: info.price.amount,
+        imageURL: info.imageURL,
+        site: info.site,
+        stock: info.stock,
+        productID: info.productID,
+        options: info.options,
+        URL: info.URL,
+      });
+    });
+  }, [itemURL]);
+
+  //every time a search is made (search values change), update the search results state
+  useEffect(() => {
+    let scraper = new WebScraper();
+    scraper.getItemsFromSearch(searchValue.searchString, searchValue.enteredEcommerceSite).then((info) => {
+      setSearchResults(info);
+    });
+  }, [searchValue]);
 
   const classes = useStyles();
   const [order, setOrder] = useState("asc");
@@ -535,13 +589,24 @@ function MainDashboard() {
         <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
       </div>
       {/* Item Selection and Info Popups */}
-      <InsertItemPopup triggerInsertItem={insertItemPopup} setTriggerInsertItem={setinsertItemPopup} setTriggerItemInfo={setItemInfoPopup} setTriggerItemInfo2={setItemInfoPopup2}></InsertItemPopup>
-      <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup}></ItemInfoPopup>
-      <ItemSearchResultPopup triggerInfoPopup2={itemInfoPopup2} setTriggeritemInfo2={setItemInfoPopup2}></ItemSearchResultPopup>
+      <InsertItemPopup
+        triggerInsertItem={insertItemPopup}
+        setTriggerInsertItem={setinsertItemPopup}
+        setTriggerItemInfo={setItemInfoPopup}
+        setTriggerItemSearchResult={setItemSearchResultPopup}
+        setTriggerItemURL={setItemURL}
+        setTriggerSearchValues={setSearchValue}
+      ></InsertItemPopup>
+      <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup} itemInfo={itemInfo}></ItemInfoPopup>
+      <ItemSearchResultPopup
+        triggerItemSearchResult={itemSearchResultPopup}
+        setTriggerItemSearchResult={setItemSearchResultPopup}
+        setTriggerItemInfo={setItemInfoPopup}
+        setTriggerItemURL={setItemURL}
+        searchResults={searchResults}
+      ></ItemSearchResultPopup>
 
       {/* <ItemSearchResultPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup}></ItemSearchResultPopup> */}
-
-
     </div>
   );
 }

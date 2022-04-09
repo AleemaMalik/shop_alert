@@ -1,63 +1,81 @@
-import React from 'react'
-import './InsertItemPopup.css'
-import {useState} from 'react';
-import { SideBarData } from '../SideBar/SideBarData';
+import React from "react";
+import "./InsertItemPopup.css";
+import { useState, useEffect } from "react";
+import { SideBarData } from "../SideBar/SideBarData";
 // import {ScraperData} from './ScraperData'
 
-
 function InsertItemPopup(props) {
-    //declaring array in state indicating state of each checkbox
-    const [checkedState, setCheckedState] = useState(
-        new Array(SideBarData.length).fill(false)
-    );
+  //state variable for the entered URL
+  const [enteredURL, updateEnteredURL] = useState("");
 
-    //Logging input to search item in console
-    const onInputChange = (Event) => {
-        console.log(Event.target.value);
-    };
+  //declaring array in state indicating state of each checkbox
+  const [checkedState, setCheckedState] = useState(new Array(SideBarData.length).fill(false));
 
-    const handleOnChange = (position) => {
-        const updatedCheckedState = checkedState.map((item, index) =>
-        index === position ? !item : item
-        );
-        setCheckedState(updatedCheckedState);
-    };
+  //state variable for the entered search string in search bar
+  const [enteredSearchString, updateEnteredSearchString] = useState("");
 
+  //Logging input to search item in console
+  const searchChangeHandler = (Event) => {
+    updateEnteredSearchString(Event.target.value);
+  };
 
-    return (props.triggerInsertItem) ? (
-        <div className="insert-item-popup">
-            <div className="insert-item-popup-content">
-                <h3 className= "option-descript">Insert Item URL</h3>
-                <input className='url-input' type="url" placeholder="Insert URL..."/>
-                <button className ="insert-button" onClick={() => props.setTriggerItemInfo(true)}>Enter</button>
-                <button className ="insert-button" onClick={() => props.setTriggerInsertItem(false)}>Cancel</button>
-                <h3 className= "option-descript">Or search for item</h3>
-            <div className = "store-list">
-                {SideBarData.map((value, index) =>{
-                    return(
-                        <div className ="store-option" key={index}>
-                            <input
-                                type = "checkbox"
-                                id={`custom-checkbox-${index}`}
-                                title ={value.title}
-                                value = {value.title}
-                                checked={checkedState[index]}
-                                onChange={() => handleOnChange(index)}
-                                />
-                            <span className= "store-name">{value.title}</span>
-                            {/* <label htmlFor={`custom-checkbox-${index}`}>{title}</label> */}
+  const handleOnChange = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) => (index === position ? !item : item));
+    setCheckedState(updatedCheckedState);
+  };
 
-                        </div>
-                    )
-                }
-                    
-                    
-                )}
+  const URLchangeHandler = (Event) => {
+    updateEnteredURL(Event.target.value);
+  };
 
-            </div>
-            <input className="item-input" type = "text"  placeholder="search item.."  onChange={onInputChange}/>
+  const enterURL = () => {
+    props.setTriggerItemInfo(true);
+    props.setTriggerItemURL(enteredURL);
+  };
 
-                {/* <div className="item-dropdown">
+  const enterSearchValues = () => {
+    props.setTriggerItemSearchResult(true);
+
+    //the default site is amazon
+    let ecommerceSite = "amazon.ca";
+    if (checkedState[1]) {
+      ecommerceSite = "walmart.ca";
+    } else if (checkedState[2]) {
+      ecommerceSite = "ebay.ca";
+    }
+
+    props.setTriggerSearchValues({
+      searchString: enteredSearchString,
+      enteredEcommerceSite: ecommerceSite,
+    });
+  };
+
+  return props.triggerInsertItem ? (
+    <div className="insert-item-popup">
+      <div className="insert-item-popup-content">
+        <h3 className="option-descript">Insert Item URL</h3>
+        <input className="url-input" type="url" placeholder="Insert URL..." onChange={URLchangeHandler} />
+        <button className="insert-button" onClick={enterURL}>
+          Enter
+        </button>
+        <button className="insert-button" onClick={() => props.setTriggerInsertItem(false)}>
+          Cancel
+        </button>
+        <h3 className="option-descript">Or search for item</h3>
+        <div className="store-list">
+          {SideBarData.map((value, index) => {
+            return (
+              <div className="store-option" key={index}>
+                <input type="checkbox" id={`custom-checkbox-${index}`} title={value.title} value={value.title} checked={checkedState[index]} onChange={() => handleOnChange(index)} />
+                <span className="store-name">{value.title}</span>
+                {/* <label htmlFor={`custom-checkbox-${index}`}>{title}</label> */}
+              </div>
+            );
+          })}
+        </div>
+        <input className="item-input" type="text" placeholder="search item.." onChange={searchChangeHandler} />
+
+        {/* <div className="item-dropdown">
                 {ScraperData.map((val, key) => { 
                     return (
                         <button className = "row" key={key}>
@@ -72,13 +90,18 @@ function InsertItemPopup(props) {
                 })}
             </div> */}
 
-            <button className ="insert-button" onClick={() => props.setTriggerItemInfo2(true)}>Enter</button>
-            {/* <button className ="insert-button2" onClick={() => props.setTriggerSearchResults(true)}>Enter</button> */}
-            <button className ="insert-button" onClick={() => props.setTriggerInsertItem(false)}>Cancel</button>            
-            
-            </div>     
-        </div>
-    ) : "";
+        <button className="insert-button" onClick={enterSearchValues}>
+          Enter
+        </button>
+        {/* <button className ="insert-button2" onClick={() => props.setTriggerSearchResults(true)}>Enter</button> */}
+        <button className="insert-button" onClick={() => props.setTriggerInsertItem(false)}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  ) : (
+    ""
+  );
 }
 
-export default InsertItemPopup
+export default InsertItemPopup;

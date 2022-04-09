@@ -38,6 +38,7 @@ class WebScraper {
         name: [[".a-color-base", ".a-text-normal"]],
         price: [[".a-price"], [".a-offscreen"]],
         imageURL: [["img"]],
+        itemURL: [['span[data-component-type="s-product-image"]'], ["a"]],
       },
     };
     this.#ebayElementLocators = {};
@@ -224,6 +225,9 @@ class WebScraper {
       currentItemInfo["price"] = self.#getElementWithLoader(currentItemLoader, self.#amazonSearchElementLocators[domain].price).html();
       //get the image URL
       currentItemInfo["imageURL"] = self.#getElementWithLoader(currentItemLoader, self.#amazonSearchElementLocators[domain].imageURL).attr("src");
+      //get the URL of the item
+      const relativeURL = self.#getElementWithLoader(currentItemLoader, self.#amazonSearchElementLocators[domain].itemURL).attr("href");
+      currentItemInfo["URL"] = "https://www.amazon." + domain + relativeURL;
 
       current = current.next();
       info.push(currentItemInfo);
@@ -261,7 +265,8 @@ class WebScraper {
     if (!(domain in this.#supportedDomains)) {
       return {};
     }
-    const info = this.#supportedWebsites[site].itemInfo(this, loader, domain);
+    let info = this.#supportedWebsites[site].itemInfo(this, loader, domain);
+    info["URL"] = url;
     return info;
   }
   async getInfoFromItemID(productID, ecommerceSite) {
@@ -291,7 +296,7 @@ class WebScraper {
     //get the HTML contents of the webpage corresponding to the URL
     const { data } = await axios.get(URL, {
       headers: {
-        "Accept-Encoding": "gzip, deflate, br",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36",
       },
     });
 
