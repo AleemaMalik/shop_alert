@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import itemImage from "./images/itemImage.png";
 import "./ItemInfoPopup.css";
 
-import WebScraper from "../WebScraper/WebScraper";
+// import WebScraper from "../WebScraper/WebScraper";
 
 function ItemInfoPopup(props) {
   console.log(props.itemInfo);
