@@ -5,6 +5,7 @@ export const onCreatePriceDropItem = /* GraphQL */ `
   subscription OnCreatePriceDropItem {
     onCreatePriceDropItem {
       id
+      username
       storeName
       itemName
       initialPrice
@@ -18,6 +19,7 @@ export const onUpdatePriceDropItem = /* GraphQL */ `
   subscription OnUpdatePriceDropItem {
     onUpdatePriceDropItem {
       id
+      username
       storeName
       itemName
       initialPrice
@@ -31,6 +33,7 @@ export const onDeletePriceDropItem = /* GraphQL */ `
   subscription OnDeletePriceDropItem {
     onDeletePriceDropItem {
       id
+      username
       storeName
       itemName
       initialPrice
@@ -44,6 +47,7 @@ export const onCreateRestockItem = /* GraphQL */ `
   subscription OnCreateRestockItem {
     onCreateRestockItem {
       id
+      username
       storeName
       itemName
       inStock
@@ -56,6 +60,7 @@ export const onUpdateRestockItem = /* GraphQL */ `
   subscription OnUpdateRestockItem {
     onUpdateRestockItem {
       id
+      username
       storeName
       itemName
       inStock
@@ -68,6 +73,7 @@ export const onDeleteRestockItem = /* GraphQL */ `
   subscription OnDeleteRestockItem {
     onDeleteRestockItem {
       id
+      username
       storeName
       itemName
       inStock
