@@ -33,7 +33,14 @@ import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
+import { Auth } from "aws-amplify";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const initialFormState = { storeName: "", itemName: "", initialPrice: "", currentPrice: "" };
+
+toast.configure();
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -245,6 +252,21 @@ function MainDashboard() {
   const [restockItems, setRestockItems] = useState([]);
   const [formData, setFormData] = useState({});
 
+  const [notifications, setNotifications] = useState([]);
+
+  const notifyPriceDrop = () => {
+    toast("Price Drop Notification");
+    notifications[notifications.length] = "Price Drop Notification";
+    setNotifications(notifications);
+    console.log(notifications);
+  };
+  const notifyBackInStock = () => {
+    toast("Back In Stock Notification");
+    notifications[notifications.length] = "Back In Stock Notification";
+    setNotifications(notifications);
+    console.log(notifications);
+  };
+
   // This tells the app to run fetchPriceDropItems everytime MainDashboard.js is rendered
   // Problem: fetchPriceDropItems updates states which renders the page. This will result in infinite loop
   // Soln: Add a second parameter to indicate this should only happen once
@@ -252,8 +274,10 @@ function MainDashboard() {
     fetchPriceDropItems();
     fetchRestockItems();
   }, []);
+
   const fetchPriceDropItems = async () => {
     try {
+      Auth.currentAuthenticatedUser().then(console.log);
       // Call the graphQL API to get all price drop items from DynamoDB
       const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
       // Extract the items
@@ -265,6 +289,7 @@ function MainDashboard() {
       console.log("error on fetching price drop items", error);
     }
   };
+
   const fetchRestockItems = async () => {
     try {
       const restockData = await API.graphql(graphqlOperation(listRestockItems));
@@ -281,6 +306,7 @@ function MainDashboard() {
     const { storeName, itemName, initialPrice, currentPrice } = formData;
     const createNewPDItem = {
       id: uuid(),
+      username: "454359e3-344a-43b8-9153-a58f3cbd6c98",
       storeName,
       itemName,
       initialPrice,
@@ -297,6 +323,44 @@ function MainDashboard() {
     // setPriceDropItems([...priceDropItems, formData]);
     // setFormData(initialFormState);
   };
+
+  // async function deletePDItem({id}){
+  //     const newPDItemArray = priceDropItemData.filter(note => note.id !== id);
+  //     setPriceDropItemData(newPDItemArray);
+  //     await API.graphql({ query: deletePriceDropItem, variables: { input: {id}}});
+  // };
+
+  const classes = useStyles();
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("currentPrice");
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const handleSelectAllClickPriceDrop = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = priceDropItems.map((n) => n.itemName);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+  //need to upload to dynamoDB, graphqlOperations takes query and variable
+
+  // if(!formData.storee || !formData.iteme || !formData.currentPricee || !formData.initialPricee)
+  // return;
+  // const priceDropData = await API.graphql(graphqlOperation(createPriceDropItem, {input: formData}));
+
+  // await API.graphql({ query: createPriceDropItem, variables: { input : formData}});
+  // setPriceDropItems([...priceDropItems, formData]);
+  // setFormData(initialFormState);
 
   // async function deletePDItem({id}){
   //     const newPDItemArray = priceDropItemData.filter(note => note.id !== id);
@@ -361,29 +425,6 @@ function MainDashboard() {
     });
   }, [searchValue]);
 
-  const classes = useStyles();
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("currentPrice");
-  const [selected, setSelected] = useState([]);
-  const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClickPriceDrop = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = priceDropItems.map((n) => n.itemName);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
   const handleSelectAllClickBackInStock = (event) => {
     if (event.target.checked) {
       const newSelecteds = restockItems.map((n) => n.itemName);
@@ -430,6 +471,8 @@ function MainDashboard() {
 
   return (
     <div className="App">
+      <button onClick={notifyPriceDrop}>Notify Price Drop!</button>
+      <button onClick={notifyBackInStock}>Notify Back In Stock!</button>
       <input onChange={(e) => setFormData({ ...formData, storeName: e.target.value })} placeholder="Store" value={formData.storeName} />
       <input onChange={(e) => setFormData({ ...formData, itemName: e.target.value })} placeholder="Item name" value={formData.itemName} />
       <input onChange={(e) => setFormData({ ...formData, initialPrice: e.target.value })} placeholder="Start price" value={formData.initialPrice} />
