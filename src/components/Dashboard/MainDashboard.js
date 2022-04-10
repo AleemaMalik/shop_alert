@@ -342,7 +342,7 @@ function MainDashboard() {
     scraper.getInfoFromURL(itemURL).then((info) => {
       setItemInfo({
         name: info.name,
-        price: info.price.amount,
+        price: info.price,
         imageURL: info.imageURL,
         site: info.site,
         stock: info.stock,

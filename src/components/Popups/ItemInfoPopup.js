@@ -5,6 +5,7 @@ import "./ItemInfoPopup.css";
 import WebScraper from "../WebScraper/WebScraper";
 
 function ItemInfoPopup(props) {
+  console.log(props.itemInfo);
   return props.triggerInfoPopup ? (
     <div className="item-info-popup">
       <div className="item-info-popup-content">
@@ -15,7 +16,7 @@ function ItemInfoPopup(props) {
             {props.itemInfo.name}
           </a>
         </h5>
-        <h3>{props.itemInfo.price.amount}</h3>
+        <h3>{props.itemInfo.price.amount + " " + props.itemInfo.price.currency}</h3>
         <form>
           <label for="colors">Choose a color:</label>
           <select name="colors" id="colors">
