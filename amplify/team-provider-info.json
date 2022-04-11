@@ -10,6 +10,11 @@
       "StackName": "amplify-shopalert-dev-222217",
       "StackId": "arn:aws:cloudformation:us-east-1:795292914926:stack/amplify-shopalert-dev-222217/cef1c720-9457-11ec-af5c-12fe024ee3ad",
       "AmplifyAppId": "d3swcp6ja309dk"
+    },
+    "categories": {
+      "auth": {
+        "shopalert": {}
+      }
     }
   }
 }

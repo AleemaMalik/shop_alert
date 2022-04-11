@@ -6,6 +6,7 @@ export const getPriceDropItem = /* GraphQL */ `
     getPriceDropItem(id: $id) {
       id
       username
+      itemURL
       storeName
       itemName
       initialPrice
@@ -25,6 +26,7 @@ export const listPriceDropItems = /* GraphQL */ `
       items {
         id
         username
+        itemURL
         storeName
         itemName
         initialPrice
@@ -41,6 +43,7 @@ export const getRestockItem = /* GraphQL */ `
     getRestockItem(id: $id) {
       id
       username
+      itemURL
       storeName
       itemName
       inStock
@@ -59,6 +62,7 @@ export const listRestockItems = /* GraphQL */ `
       items {
         id
         username
+        itemURL
         storeName
         itemName
         inStock

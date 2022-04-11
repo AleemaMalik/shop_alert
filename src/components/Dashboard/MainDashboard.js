@@ -277,7 +277,6 @@ function MainDashboard() {
 
   const fetchPriceDropItems = async () => {
     try {
-      Auth.currentAuthenticatedUser().then(console.log);
       // Call the graphQL API to get all price drop items from DynamoDB
       const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
       // Extract the items
@@ -307,6 +306,7 @@ function MainDashboard() {
     const createNewPDItem = {
       id: uuid(),
       username: "454359e3-344a-43b8-9153-a58f3cbd6c98",
+      itemURL: "www.amazon.ca",
       storeName,
       itemName,
       initialPrice,
@@ -516,7 +516,7 @@ function MainDashboard() {
         <Paper className={classes.paper}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
-            <button className="add_item" onClick={() => setinsertItemPopup(true)}>
+            <button className="add_item" onClick={() => setinsertItemPopup(true)} id="price-drop-table">
               Add item
             </button>
 
@@ -577,7 +577,7 @@ function MainDashboard() {
         <Paper className={classes.paper}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
-            <button className="add_item" onClick={() => setinsertItemPopup(true)}>
+            <button className="add_item" onClick={() => setinsertItemPopup(true)} id="restock-table">
               Add item
             </button>
             <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">

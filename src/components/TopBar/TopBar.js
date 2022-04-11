@@ -80,7 +80,7 @@ const TopBar = ()=>{
             </li>
             
             <li className = 'nav-item'>
-                <Link to ='shopAlert/login' className='nav-links' onClick={closeMobileMenu}>
+                <Link to ='shopAlert/login' className='nav-links' onClick={closeMobileMenu} id="loginBtn">
                    Login
                 </Link>
             </li>
