@@ -13,7 +13,7 @@ import { LogIn } from "./components/Home/LogIn";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import WebScraper from "./components/WebScraper/WebScraper";
+// import WebScraper from "./components/WebScraper/WebScraper";
 
 Amplify.configure(awsconfig);
 function App() {
