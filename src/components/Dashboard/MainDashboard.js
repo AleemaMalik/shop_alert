@@ -244,6 +244,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 function MainDashboard() {
   //////////////////////////////////////////////////////
 
@@ -254,15 +255,15 @@ function MainDashboard() {
 
   const [notifications, setNotifications] = useState([]);
 
-  const notifyPriceDrop = () => {
-    toast("Price Drop Notification");
-    notifications[notifications.length] = "Price Drop Notification";
+  const notifyPriceDrop = (prevPrice, newPrice, itemName) => {
+    toast("Price Dropped for "+itemName+" from "+prevPrice+" to "+newPrice);
+    notifications[notifications.length] = "Price Dropped for "+itemName+" from "+prevPrice+" to "+newPrice;
     setNotifications(notifications);
     console.log(notifications);
   };
-  const notifyBackInStock = () => {
-    toast("Back In Stock Notification");
-    notifications[notifications.length] = "Back In Stock Notification";
+  const notifyBackInStock = (itemName) => {
+    toast("Item "+itemName+" is back instock");
+    notifications[notifications.length] = "Item "+itemName+" is back instock";
     setNotifications(notifications);
     console.log(notifications);
   };
@@ -471,8 +472,8 @@ function MainDashboard() {
 
   return (
     <div className="App">
-      <button onClick={notifyPriceDrop}>Notify Price Drop!</button>
-      <button onClick={notifyBackInStock}>Notify Back In Stock!</button>
+      {/* <button onClick={() => notifyPriceDrop(10, 9,"item name test")}>Notify Price Drop!</button>
+      <button onClick={() => notifyBackInStock("back instock item test")}>Notify Back In Stock!</button> */}
       <input onChange={(e) => setFormData({ ...formData, storeName: e.target.value })} placeholder="Store" value={formData.storeName} />
       <input onChange={(e) => setFormData({ ...formData, itemName: e.target.value })} placeholder="Item name" value={formData.itemName} />
       <input onChange={(e) => setFormData({ ...formData, initialPrice: e.target.value })} placeholder="Start price" value={formData.initialPrice} />

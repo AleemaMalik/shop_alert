@@ -1,4 +1,6 @@
 import AWS from 'aws-sdk'; 
+import  {notifyPriceDrop} from './Dashboard/MainDashboard.js';
+import  {notifyBackInStock} from './Dashboard/MainDashboard.js';
 // ES5 example
 const { CloudWatchLogsClient, AssociateKmsKeyCommand } = require("@aws-sdk/client-cloudwatch-logs");
 
@@ -88,6 +90,9 @@ exports.handler = function(event, context) {
         	//update initialPrice in table to have value of prevPrice
         	updatePriceTable(record_id, prevPrice)
         	console.log('New price is lower... SEND NOTIFICATION');
+
+          // send price drop notification, replace record_id with the item name
+          notifyPriceDrop(prevPrice, newPrice,record_id);
         }
         
         else{
