@@ -44,3 +44,7 @@
 //         });    
 //     }
 // };
+
+
+// let scraper = new WebScraper();
+// scraper.getInfoFromURL("")
