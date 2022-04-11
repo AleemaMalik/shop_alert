@@ -80,9 +80,9 @@ const headCellsBackInStock = [
 ];
 
 function EnhancedTableHeadPriceDrops(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { classesPriceDrop, onSelectAllClickPriceDrop, orderPriceDrop, orderByPriceDrop, numSelectedPriceDrop, rowCountPriceDrop, onRequestSortPriceDrop } = props;
   const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
+    onRequestSortPriceDrop(event, property);
   };
 
   return (
@@ -90,17 +90,17 @@ function EnhancedTableHeadPriceDrops(props) {
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
+            indeterminate={numSelectedPriceDrop > 0 && numSelectedPriceDrop < rowCountPriceDrop}
+            checked={rowCountPriceDrop > 0 && numSelectedPriceDrop === rowCountPriceDrop}
+            onChange={onSelectAllClickPriceDrop}
             inputProps={{ "aria-label": "select all desserts" }}
           />
         </TableCell>
         {headCellsPriceDrop.map((headCell) => (
-          <TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderBy === headCell.id ? order : false}>
-            <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
+          <TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderByPriceDrop === headCell.id ? orderPriceDrop : false}>
+            <TableSortLabel active={orderByPriceDrop === headCell.id} direction={orderByPriceDrop === headCell.id ? orderPriceDrop : "asc"} onClick={createSortHandler(headCell.id)}>
               {headCell.label}
-              {orderBy === headCell.id ? <span className={classes.visuallyHidden}>{order === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
+              {orderByPriceDrop === headCell.id ? <span className={classesPriceDrop.visuallyHidden}>{orderPriceDrop === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -110,19 +110,19 @@ function EnhancedTableHeadPriceDrops(props) {
 }
 
 EnhancedTableHeadPriceDrops.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
+  classesPriceDrop: PropTypes.object.isRequired,
+  numSelectedPriceDrop: PropTypes.number.isRequired,
+  onRequestSortPriceDrop: PropTypes.func.isRequired,
+  onSelectAllClickPriceDrop: PropTypes.func.isRequired,
+  orderPriceDrop: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  orderByPriceDrop: PropTypes.string.isRequired,
+  rowCountPriceDrop: PropTypes.number.isRequired,
 };
 
 function EnhancedTableHeadBackInStock(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { classesBackInStock, onSelectAllClickBackInStock, orderBackInStock, orderByBackInStock, numSelectedBackInStock, rowCountBackInStock, onRequestSortBackInStock } = props;
   const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
+    onRequestSortBackInStock(event, property);
   };
 
   return (
@@ -130,17 +130,17 @@ function EnhancedTableHeadBackInStock(props) {
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
+            indeterminate={numSelectedBackInStock > 0 && numSelectedBackInStock < rowCountBackInStock}
+            checked={rowCountBackInStock > 0 && numSelectedBackInStock === rowCountBackInStock}
+            onChange={onSelectAllClickBackInStock}
             inputProps={{ "aria-label": "select all desserts" }}
           />
         </TableCell>
         {headCellsBackInStock.map((headCell) => (
-          <TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderBy === headCell.id ? order : false}>
-            <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
+          <TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderByBackInStock === headCell.id ? orderBackInStock : false}>
+            <TableSortLabel active={orderByBackInStock === headCell.id} direction={orderByBackInStock === headCell.id ? orderBackInStock : "asc"} onClick={createSortHandler(headCell.id)}>
               {headCell.label}
-              {orderBy === headCell.id ? <span className={classes.visuallyHidden}>{order === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
+              {orderByBackInStock === headCell.id ? <span className={classesBackInStock.visuallyHidden}>{orderBackInStock === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -150,13 +150,13 @@ function EnhancedTableHeadBackInStock(props) {
 }
 
 EnhancedTableHeadBackInStock.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
+  classesBackInStock: PropTypes.object.isRequired,
+  numSelectedBackInStock: PropTypes.number.isRequired,
+  onRequestSortBackInStock: PropTypes.func.isRequired,
+  onSelectAllClickBackInStock: PropTypes.func.isRequired,
+  orderBackInStock: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  orderByBackInStock: PropTypes.string.isRequired,
+  rowCountBackInStock: PropTypes.number.isRequired,
 };
 
 const useToolbarStyles = makeStyles((theme) => ({
@@ -179,27 +179,27 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = (props) => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
+const EnhancedTableToolbarPriceDrop = (props) => {
+  const classesPriceDrop = useToolbarStyles();
+  const { numSelectedPriceDrop } = props;
 
   return (
     <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
+      className={clsx(classesPriceDrop.root, {
+        [classesPriceDrop.highlight]: numSelectedPriceDrop > 0,
       })}
     >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
+      {numSelectedPriceDrop > 0 ? (
+        <Typography className={classesPriceDrop.title} color="inherit" variant="subtitle1" component="div">
+          {numSelectedPriceDrop} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+        <Typography className={classesPriceDrop.title} variant="h6" id="tableTitle" component="div">
           Price Drop Items
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {numSelectedPriceDrop > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete">
             <DeleteIcon />
@@ -216,9 +216,50 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
+EnhancedTableToolbarPriceDrop.propTypes = {
+  numSelectedPriceDrop: PropTypes.number.isRequired,
 };
+
+const EnhancedTableToolbarBackInStock = (props) => {
+    const classesBackInStock = useToolbarStyles();
+    const { numSelectedBackInStock } = props;
+  
+    return (
+      <Toolbar
+        className={clsx(classesBackInStock.root, {
+          [classesBackInStock.highlight]: numSelectedBackInStock > 0,
+        })}
+      >
+        {numSelectedBackInStock > 0 ? (
+          <Typography className={classesBackInStock.title} color="inherit" variant="subtitle1" component="div">
+            {numSelectedBackInStock} selected
+          </Typography>
+        ) : (
+          <Typography className={classesBackInStock.title} variant="h6" id="tableTitle" component="div">
+            Price Drop Items
+          </Typography>
+        )}
+  
+        {numSelectedBackInStock > 0 ? (
+          <Tooltip title="Delete">
+            <IconButton aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Filter list">
+            <IconButton aria-label="filter list">
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Toolbar>
+    );
+  };
+
+  EnhancedTableToolbarBackInStock.propTypes = {
+    numSelectedBackInStock: PropTypes.number.isRequired,
+  };
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -332,26 +373,48 @@ function MainDashboard() {
   // };
 
   const classes = useStyles();
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("currentPrice");
-  const [selected, setSelected] = useState([]);
-  const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [orderPriceDrop, setOrderPriceDrop] = useState("asc");
+  const [orderBackInStock, setOrderBackInStock] = useState("asc");
+  const [orderByPriceDrop, setOrderByPriceDrop] = useState("currentPrice");
+  const [orderByBackInStock, setOrderByBackInStock] = useState("itemName");
+  const [selectedPriceDrop, setSelectedPriceDrop] = useState([]);
+  const [selectedBackInStock, setSelectedBackInStock] = useState([]);
+  const [pagePriceDrop, setPagePriceDrop] = useState(0);
+  const [pageBackInStock, setPageBackInStock] = useState(0);
+  const [densePriceDrop, setDensePriceDrop] = useState(false);
+  const [denseBackInStock, setDenseBackInStock] = useState(false);
+  const [rowsPerPagePriceDrop, setRowsPerPagePriceDrop] = useState(5);
+  const [rowsPerPageBackInStock, setRowsPerPageBackInStock] = useState(5);
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+  const handleRequestSortPriceDrop = (event, property) => {
+    const isAsc = orderByPriceDrop === property && orderPriceDrop === "asc";
+    setOrderPriceDrop(isAsc ? "desc" : "asc");
+    setOrderByPriceDrop(property);
+  };
+
+
+  const handleRequestSortBackInStock = (event, property) => {
+    const isAsc = orderByBackInStock === property && orderBackInStock === "asc";
+    setOrderBackInStock(isAsc ? "desc" : "asc");
+    setOrderByBackInStock(property);
   };
 
   const handleSelectAllClickPriceDrop = (event) => {
     if (event.target.checked) {
-      const newSelecteds = priceDropItems.map((n) => n.itemName);
-      setSelected(newSelecteds);
+      const newSelected = priceDropItems.map((n) => n.itemName);
+      setSelectedPriceDrop(newSelected);
       return;
     }
-    setSelected([]);
+    setSelectedPriceDrop([]);
+  };
+
+  const handleSelectAllClickBackInStock = (event) => {
+    if (event.target.checked) {
+      const newSelected = restockItems.map((n) => n.itemName);
+      setSelectedBackInStock(newSelected);
+      return;
+    }
+    setSelectedBackInStock([]);
   };
   //need to upload to dynamoDB, graphqlOperations takes query and variable
 
@@ -426,49 +489,77 @@ function MainDashboard() {
     });
   }, [searchValue]);
 
-  const handleSelectAllClickBackInStock = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = restockItems.map((n) => n.itemName);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClickPriceDrop = (event, name) => {
+    const selectedIndex = selectedPriceDrop.indexOf(name);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selectedPriceDrop, name);
     } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
+      newSelected = newSelected.concat(selectedPriceDrop.slice(1));
+    } else if (selectedIndex === selectedPriceDrop.length - 1) {
+      newSelected = newSelected.concat(selectedPriceDrop.slice(0, -1));
     } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+      newSelected = newSelected.concat(selectedPriceDrop.slice(0, selectedIndex), selectedPriceDrop.slice(selectedIndex + 1));
     }
 
-    setSelected(newSelected);
+    setSelectedPriceDrop(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleClickBackInStock = (event, name) => {
+    const selectedIndex = selectedBackInStock.indexOf(name);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selectedBackInStock, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selectedBackInStock.slice(1));
+    } else if (selectedIndex === selectedBackInStock.length - 1) {
+      newSelected = newSelected.concat(selectedBackInStock.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(selectedBackInStock.slice(0, selectedIndex), selectedBackInStock.slice(selectedIndex + 1));
+    }
+
+    setSelectedBackInStock(newSelected);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+
+  const handleChangePagePriceDrop = (event, newPage) => {
+    setPagePriceDrop(newPage);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
+  const handleChangePageBackInStock = (event, newPage) => {
+    setPageBackInStock(newPage);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const emptyRowsPriceDrop = rowsPerPage - Math.min(rowsPerPage, priceDropItems.length - page * rowsPerPage);
-  const emptyRowsBackInStock = rowsPerPage - Math.min(rowsPerPage, restockItems.length - page * rowsPerPage);
+
+
+  const handleChangeRowsPerPagePriceDrop = (event) => {
+    setRowsPerPagePriceDrop(parseInt(event.target.value, 10));
+    setPagePriceDrop(0);
+  };
+
+  const handleChangeRowsPerPageBackInStock = (event) => {
+    setRowsPerPageBackInStock(parseInt(event.target.value, 10));
+    setPageBackInStock(0);
+  };
+
+  const handleChangeDensePriceDrop = (event) => {
+    setDensePriceDrop(event.target.checked);
+  };
+
+  const handleChangeDenseBackInStock = (event) => {
+    setDenseBackInStock(event.target.checked);
+  };
+
+  const isSelectedPriceDrop = (name) => selectedPriceDrop.indexOf(name) !== -1;
+
+  const isSelectedBackInStock = (name) => selectedBackInStock.indexOf(name) !== -1;
+
+  const emptyRowsPriceDrop = rowsPerPagePriceDrop - Math.min(rowsPerPagePriceDrop, priceDropItems.length - pagePriceDrop * rowsPerPagePriceDrop);
+  const emptyRowsBackInStock = rowsPerPageBackInStock - Math.min(rowsPerPageBackInStock, restockItems.length - pageBackInStock * rowsPerPageBackInStock);
 
   return (
     <div className="App">
@@ -515,31 +606,34 @@ function MainDashboard() {
 
       <div className={classes.root}>
         <Paper className={classes.paper}>
-          <EnhancedTableToolbar numSelected={selected.length} />
+          <EnhancedTableToolbarPriceDrop numSelectedPriceDrop={selectedPriceDrop.length} />
           <TableContainer>
             <button className="add_item" onClick={() => setinsertItemPopup(true)}>
-              Add item
+              Add item Price Drop
             </button>
+          
 
-            <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
+            
+
+            <Table className={classes.table} aria-labelledby="tableTitle" size={densePriceDrop ? "small" : "medium"} aria-label="enhanced table">
               <EnhancedTableHeadPriceDrops
                 classes={classes}
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
+                numSelectedPriceDrop={selectedPriceDrop.length}
+                order={orderPriceDrop}
+                orderBy={orderByPriceDrop}
                 onSelectAllClick={handleSelectAllClickPriceDrop}
-                onRequestSort={handleRequestSort}
+                onRequestSort={handleRequestSortPriceDrop}
                 rowCount={priceDropItems.length}
               />
               <TableBody>
-                {stableSort(priceDropItems, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                {stableSort(priceDropItems, getComparator(orderPriceDrop, orderByPriceDrop))
+                  .slice(pagePriceDrop * rowsPerPagePriceDrop, pagePriceDrop * rowsPerPagePriceDrop + rowsPerPagePriceDrop)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
+                    const isItemSelected = isSelectedPriceDrop(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
-                      <TableRow hover onClick={(event) => handleClick(event, row.name)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.name} selected={isItemSelected}>
+                      <TableRow hover onClick={(event) => handleClickPriceDrop(event, row.name)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.name} selected={isItemSelected}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={isItemSelected} inputProps={{ "aria-labelledby": labelId }} />
                         </TableCell>
@@ -554,7 +648,7 @@ function MainDashboard() {
                     );
                   })}
                 {emptyRowsPriceDrop > 0 && (
-                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRowsPriceDrop }}>
+                  <TableRow style={{ height: (densePriceDrop ? 33 : 53) * emptyRowsPriceDrop }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
@@ -565,41 +659,41 @@ function MainDashboard() {
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={priceDropItems.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPage={rowsPerPagePriceDrop}
+            page={pagePriceDrop}
+            onPageChange={handleChangePagePriceDrop}
+            onRowsPerPageChange={handleChangeRowsPerPagePriceDrop}
           />
         </Paper>
-        <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
+        <FormControlLabel control={<Switch checked={densePriceDrop} onChange={handleChangeDensePriceDrop} />} label="Dense padding" />
       </div>
 
       <div className={classes.root}>
         <Paper className={classes.paper}>
-          <EnhancedTableToolbar numSelected={selected.length} />
+          <EnhancedTableToolbarBackInStock numSelectedBackInStock={selectedBackInStock.length} />
           <TableContainer>
             <button className="add_item" onClick={() => setinsertItemPopup(true)}>
-              Add item
+              Add item Back In Stock
             </button>
-            <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
+            <Table className={classes.table} aria-labelledby="tableTitle" size={denseBackInStock ? "small" : "medium"} aria-label="enhanced table">
               <EnhancedTableHeadBackInStock
                 classes={classes}
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
+                numSelected={selectedBackInStock.length}
+                order={orderBackInStock}
+                orderBy={orderByBackInStock}
                 onSelectAllClick={handleSelectAllClickBackInStock}
-                onRequestSort={handleRequestSort}
+                onRequestSort={handleRequestSortBackInStock}
                 rowCount={restockItems.length}
               />
               <TableBody>
-                {stableSort(restockItems, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                {stableSort(restockItems, getComparator(orderBackInStock, orderByBackInStock))
+                  .slice(pageBackInStock * rowsPerPageBackInStock, pageBackInStock * rowsPerPageBackInStock + rowsPerPageBackInStock)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
+                    const isItemSelected = isSelectedBackInStock(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
-                      <TableRow hover onClick={(event) => handleClick(event, row.name)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.name} selected={isItemSelected}>
+                      <TableRow hover onClick={(event) => handleClickBackInStock(event, row.name)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.name} selected={isItemSelected}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={isItemSelected} inputProps={{ "aria-labelledby": labelId }} />
                         </TableCell>
@@ -613,7 +707,7 @@ function MainDashboard() {
                     );
                   })}
                 {emptyRowsBackInStock > 0 && (
-                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRowsBackInStock }}>
+                  <TableRow style={{ height: (denseBackInStock ? 33 : 53) * emptyRowsBackInStock }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
@@ -624,13 +718,13 @@ function MainDashboard() {
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
             count={restockItems.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPage={rowsPerPageBackInStock}
+            page={pageBackInStock}
+            onPageChange={handleChangePageBackInStock}
+            onRowsPerPageChange={handleChangeRowsPerPageBackInStock}
           />
         </Paper>
-        <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
+        <FormControlLabel control={<Switch checked={denseBackInStock} onChange={handleChangeDenseBackInStock} />} label="Dense padding" />
       </div>
       {/* Item Selection and Info Popups */}
       <InsertItemPopup
