@@ -83,7 +83,7 @@ const headCellsBackInStock = [
 
 function EnhancedTableHeadPriceDrops(props) {
   const { classesPriceDrop, onSelectAllClickPriceDrop, orderPriceDrop, orderByPriceDrop, numSelectedPriceDrop, rowCountPriceDrop, onRequestSortPriceDrop } = props;
-  const createSortHandler = (property) => (event) => {
+  const createSortHandlerPriceDrop = (property) => (event) => {
     onRequestSortPriceDrop(event, property);
   };
 
@@ -98,11 +98,11 @@ function EnhancedTableHeadPriceDrops(props) {
             inputProps={{ "aria-label": "select all desserts" }}
           />
         </TableCell>
-        {headCellsPriceDrop.map((headCell) => (
-          <TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderByPriceDrop === headCell.id ? orderPriceDrop : false}>
-            <TableSortLabel active={orderByPriceDrop === headCell.id} direction={orderByPriceDrop === headCell.id ? orderPriceDrop : "asc"} onClick={createSortHandler(headCell.id)}>
-              {headCell.label}
-              {orderByPriceDrop === headCell.id ? <span className={classesPriceDrop.visuallyHidden}>{orderPriceDrop === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
+        {headCellsPriceDrop.map((headCellPriceDrop) => (
+          <TableCell key={headCellPriceDrop.id} align={headCellPriceDrop.numeric ? "right" : "left"} padding={headCellPriceDrop.disablePadding ? "none" : "normal"} sortDirection={orderByPriceDrop === headCellPriceDrop.id ? orderPriceDrop : false}>
+            <TableSortLabel active={orderByPriceDrop === headCellPriceDrop.id} direction={orderByPriceDrop === headCellPriceDrop.id ? orderPriceDrop : "asc"} onClick={createSortHandlerPriceDrop(headCellPriceDrop.id)}>
+              {headCellPriceDrop.label}
+              {orderByPriceDrop === headCellPriceDrop.id ? <span className={classesPriceDrop.visuallyHidden}>{orderPriceDrop === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -123,7 +123,7 @@ EnhancedTableHeadPriceDrops.propTypes = {
 
 function EnhancedTableHeadBackInStock(props) {
   const { classesBackInStock, onSelectAllClickBackInStock, orderBackInStock, orderByBackInStock, numSelectedBackInStock, rowCountBackInStock, onRequestSortBackInStock } = props;
-  const createSortHandler = (property) => (event) => {
+  const createSortHandlerBackInStock = (property) => (event) => {
     onRequestSortBackInStock(event, property);
   };
 
@@ -138,11 +138,11 @@ function EnhancedTableHeadBackInStock(props) {
             inputProps={{ "aria-label": "select all desserts" }}
           />
         </TableCell>
-        {headCellsBackInStock.map((headCell) => (
-          <TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderByBackInStock === headCell.id ? orderBackInStock : false}>
-            <TableSortLabel active={orderByBackInStock === headCell.id} direction={orderByBackInStock === headCell.id ? orderBackInStock : "asc"} onClick={createSortHandler(headCell.id)}>
-              {headCell.label}
-              {orderByBackInStock === headCell.id ? <span className={classesBackInStock.visuallyHidden}>{orderBackInStock === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
+        {headCellsBackInStock.map((headCellBackInStock) => (
+          <TableCell key={headCellBackInStock.id} align={headCellBackInStock.numeric ? "right" : "left"} padding={headCellBackInStock.disablePadding ? "none" : "normal"} sortDirection={orderByBackInStock === headCellBackInStock.id ? orderBackInStock : false}>
+            <TableSortLabel active={orderByBackInStock === headCellBackInStock.id} direction={orderByBackInStock === headCellBackInStock.id ? orderBackInStock : "asc"} onClick={createSortHandlerBackInStock(headCellBackInStock.id)}>
+              {headCellBackInStock.label}
+              {orderByBackInStock === headCellBackInStock.id ? <span className={classesBackInStock.visuallyHidden}>{orderBackInStock === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -475,7 +475,8 @@ const fetchRestockItems = async () => {
   //     await API.graphql({ query: deletePriceDropItem, variables: { input: {id}}});
   // };
 
-  const classes = useStyles();
+  const classesPriceDrop = useStyles();
+  const classesBackInStock = useStyles();
   const [orderPriceDrop, setOrderPriceDrop] = useState("asc");
   const [orderBackInStock, setOrderBackInStock] = useState("asc");
   const [orderByPriceDrop, setOrderByPriceDrop] = useState("currentPrice");
@@ -707,8 +708,8 @@ const fetchRestockItems = async () => {
                 
             </table>    */}
 
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
+      <div className={classesPriceDrop.root}>
+        <Paper className={classesPriceDrop.paper}>
           <EnhancedTableToolbarPriceDrop numSelectedPriceDrop={selectedPriceDrop.length} />
           <TableContainer>
             <button className="add_item" onClick={() => setinsertItemPopup(true)}>
@@ -718,35 +719,35 @@ const fetchRestockItems = async () => {
 
             
 
-            <Table className={classes.table} aria-labelledby="tableTitle" size={densePriceDrop ? "small" : "medium"} aria-label="enhanced table">
+            <Table className={classesPriceDrop.table} aria-labelledby="tableTitle" size={densePriceDrop ? "small" : "medium"} aria-label="enhanced table">
               <EnhancedTableHeadPriceDrops
-                classes={classes}
+                classesPriceDrop={classesPriceDrop}
                 numSelectedPriceDrop={selectedPriceDrop.length}
-                order={orderPriceDrop}
-                orderBy={orderByPriceDrop}
-                onSelectAllClick={handleSelectAllClickPriceDrop}
-                onRequestSort={handleRequestSortPriceDrop}
-                rowCount={priceDropItems.length}
+                orderPriceDrop={orderPriceDrop}
+                orderByPriceDrop={orderByPriceDrop}
+                onSelectAllClickPriceDrop={handleSelectAllClickPriceDrop}
+                onRequestSortPriceDrop={handleRequestSortPriceDrop}
+                rowCountPriceDrop={priceDropItems.length}
               />
               <TableBody>
                 {stableSort(priceDropItems, getComparator(orderPriceDrop, orderByPriceDrop))
                   .slice(pagePriceDrop * rowsPerPagePriceDrop, pagePriceDrop * rowsPerPagePriceDrop + rowsPerPagePriceDrop)
-                  .map((row, index) => {
-                    const isItemSelected = isSelectedPriceDrop(row.name);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+                  .map((rowPriceDrop, indexPriceDrop) => {
+                    const isItemSelectedPriceDrop = isSelectedPriceDrop(rowPriceDrop.name);
+                    const labelIdPriceDrop = `enhanced-table-checkbox-${indexPriceDrop}`;
 
                     return (
-                      <TableRow hover onClick={(event) => handleClickPriceDrop(event, row.name)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.name} selected={isItemSelected}>
+                      <TableRow hover onClick={(event) => handleClickPriceDrop(event, rowPriceDrop.name)} role="checkbox" aria-checked={isItemSelectedPriceDrop} tabIndex={-1} key={rowPriceDrop.name} selected={isItemSelectedPriceDrop}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} inputProps={{ "aria-labelledby": labelId }} />
+                          <Checkbox checked={isItemSelectedPriceDrop} inputProps={{ "aria-labelledby": labelIdPriceDrop }} />
                         </TableCell>
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {row.itemName}
+                        <TableCell component="th" id={labelIdPriceDrop} scope="row" padding="none">
+                          {rowPriceDrop.itemName}
                         </TableCell>
                         {/* <TableCell align="right">{row.itemName}</TableCell> */}
-                        <TableCell align="right">{row.storeName}</TableCell>
-                        <TableCell align="right">{row.initialPrice}</TableCell>
-                        <TableCell align="right">{row.currentPrice}</TableCell>
+                        <TableCell align="right">{rowPriceDrop.storeName}</TableCell>
+                        <TableCell align="right">{rowPriceDrop.initialPrice}</TableCell>
+                        <TableCell align="right">{rowPriceDrop.currentPrice}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -771,41 +772,41 @@ const fetchRestockItems = async () => {
         <FormControlLabel control={<Switch checked={densePriceDrop} onChange={handleChangeDensePriceDrop} />} label="Dense padding" />
       </div>
 
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
+      <div className={classesBackInStock.root}>
+        <Paper className={classesBackInStock.paper}>
           <EnhancedTableToolbarBackInStock numSelectedBackInStock={selectedBackInStock.length} />
           <TableContainer>
             <button className="add_item" onClick={() => setinsertItemPopup(true)}>
               Add item Back In Stock
             </button>
-            <Table className={classes.table} aria-labelledby="tableTitle" size={denseBackInStock ? "small" : "medium"} aria-label="enhanced table">
+            <Table className={classesBackInStock.table} aria-labelledby="tableTitle" size={denseBackInStock ? "small" : "medium"} aria-label="enhanced table">
               <EnhancedTableHeadBackInStock
-                classes={classes}
-                numSelected={selectedBackInStock.length}
-                order={orderBackInStock}
-                orderBy={orderByBackInStock}
-                onSelectAllClick={handleSelectAllClickBackInStock}
-                onRequestSort={handleRequestSortBackInStock}
-                rowCount={restockItems.length}
+                classesBackInStock={classesBackInStock}
+                numSelectedBackInStock={selectedBackInStock.length}
+                orderBackInStock={orderBackInStock}
+                orderByBackInStock={orderByBackInStock}
+                onSelectAllClickBackInStock={handleSelectAllClickBackInStock}
+                onRequestSortBackInStock={handleRequestSortBackInStock}
+                rowCountBackInStock={restockItems.length}
               />
               <TableBody>
                 {stableSort(restockItems, getComparator(orderBackInStock, orderByBackInStock))
                   .slice(pageBackInStock * rowsPerPageBackInStock, pageBackInStock * rowsPerPageBackInStock + rowsPerPageBackInStock)
-                  .map((row, index) => {
-                    const isItemSelected = isSelectedBackInStock(row.name);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+                  .map((rowBackInStock, indexBackInStock) => {
+                    const isItemSelectedBackInStock = isSelectedBackInStock(rowBackInStock.name);
+                    const labelIdBackInStock = `enhanced-table-checkbox-${indexBackInStock}`;
 
                     return (
-                      <TableRow hover onClick={(event) => handleClickBackInStock(event, row.name)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.name} selected={isItemSelected}>
+                      <TableRow hover onClick={(event) => handleClickBackInStock(event, rowBackInStock.name)} role="checkbox" aria-checked={isItemSelectedBackInStock} tabIndex={-1} key={rowBackInStock.name} selected={isItemSelectedBackInStock}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} inputProps={{ "aria-labelledby": labelId }} />
+                          <Checkbox checked={isItemSelectedBackInStock} inputProps={{ "aria-labelledby": labelIdBackInStock }} />
                         </TableCell>
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {row.itemName}
+                        <TableCell component="th" id={labelIdBackInStock} scope="row" padding="none">
+                          {rowBackInStock.itemName}
                         </TableCell>
                         {/* <TableCell align="right">{row.itemName}</TableCell> */}
-                        <TableCell align="right">{row.storeName}</TableCell>
-                        <TableCell align="right">{row.inStock}</TableCell>
+                        <TableCell align="right">{rowBackInStock.storeName}</TableCell>
+                        <TableCell align="right">{rowBackInStock.inStock}</TableCell>
                       </TableRow>
                     );
                   })}
