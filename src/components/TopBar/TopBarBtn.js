@@ -15,7 +15,7 @@ export function TopBarBtn(){
 
     return(
           <div className="rightHeader">
-          <button onClick={signOut} className="SignupBtn">Sign out </button>
+          <button onClick={signOut} className="SignoutBtn" id="signoutBtn">Sign out </button>
           </div>
     );
 }

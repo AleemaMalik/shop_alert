@@ -1,14 +1,97 @@
 import React, { useState, useEffect } from "react";
 import itemImage from "./images/itemImage.png";
 import "./ItemInfoPopup.css";
-
-// import WebScraper from "../WebScraper/WebScraper";
-
+import { createPriceDropItem, createRestockItem } from "../../graphql/mutations";
+import Amplify, { API, graphqlOperation } from "aws-amplify";
+import WebScraper from "../Webscraper/WebScraper";
+import { v4 as uuid } from "uuid";
+import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
+import Pool from "../Authentication/UserPool";
+import { Auth } from "aws-amplify";
 function ItemInfoPopup(props) {
   console.log(props.itemInfo);
+
+  const createPDItem = async (props) => {
+    // Get the logged in user
+    Auth.currentAuthenticatedUser().then(console.log);
+    const { attributes } = await Auth.currentAuthenticatedUser();
+    console.log(attributes.email);
+
+    // Refactor the storeName that is saved in the prop
+    let storeName = "";
+    switch (props.itemInfo.site) {
+      case "amazon.ca":
+        storeName = "Amazon";
+        break;
+      case "ebay.ca":
+        storeName = "Ebay";
+        break;
+      case "walmart.ca":
+        storeName = "Walmart";
+        break;
+      default:
+        storeName = "Amazon";
+    }
+
+    // Create a price drop table item
+    if (props.priceDropTable) {
+      const createNewPDItem = {
+        id: uuid(),
+        username: attributes.email,
+        itemURL: props.itemInfo.URL,
+        storeName: storeName,
+        itemName: props.itemInfo.name,
+        initialPrice: props.itemInfo.price.amount,
+        currentPrice: props.itemInfo.price.amount,
+      };
+      console.log(createNewPDItem);
+
+      // Need to upload to dynamoDB, graphqlOperations takes query and variable
+      try {
+        await API.graphql(graphqlOperation(createPriceDropItem, { input: createNewPDItem }));
+      } catch (error) {
+        console.log("error on creating price drop items", error);
+      }
+    } else {
+      let isInStock = "Yes";
+      props.itemInfo.stock ? (isInStock = "Yes") : (isInStock = "No");
+      const createNewRestockItem = {
+        id: uuid(),
+        username: attributes.email,
+        itemURL: props.itemInfo.URL,
+        storeName: storeName,
+        itemName: props.itemInfo.name,
+        inStock: isInStock,
+      };
+      console.log(createNewRestockItem);
+
+      // Need to upload to dynamoDB, graphqlOperations takes query and variable
+      try {
+        await API.graphql(graphqlOperation(createRestockItem, { input: createNewRestockItem }));
+      } catch (error) {
+        console.log("error on creating restock items", error);
+      }
+    }
+  };
+
+  function submitHandler(Event) {
+    Event.preventDefault();
+    createPDItem(props);
+    setTimeout(function () {
+      window.location.reload();
+    }, 300);
+  }
+
+  let popupHeader;
+  if (props.priceDropTable) {
+    popupHeader = "Add Item to Price Drop Tracking";
+  } else {
+    popupHeader = "Add Item to Restock Tracking";
+  }
   return props.triggerInfoPopup ? (
     <div className="item-info-popup">
       <div className="item-info-popup-content">
+        <h3>{popupHeader}</h3>
         <h3>Item Information</h3>
         <img src={props.itemInfo.imageURL} alt="Image Unavailable" />
         <h5>
@@ -25,7 +108,9 @@ function ItemInfoPopup(props) {
             <option>Matte-Black</option>
           </select>
           <br />
-          <input className="item-info-submit" type="submit" value="Submit" />
+          {/* <button onClick={(e) => {this.clickMe(e, someParameter);}}>Click Me!</button> */}
+          {/* <button onClick={submitHandler}> Create Item</button> */}
+          <input className="item-info-submit" type="submit" value="Submit" onClick={submitHandler} />
         </form>
         <button onClick={() => props.setTriggeritemInfo(false)}>Cancel</button>
       </div>

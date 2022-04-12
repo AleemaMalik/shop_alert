@@ -1,6 +1,6 @@
 //import React from 'react'
 import { createPriceDropItem, updatePriceDropItem, deletePriceDropItem } from "../../graphql/mutations";
-import {createRestockItem, updateRestockItem, deleteRestockItem } from '../../graphql/mutations'
+import { createRestockItem, updateRestockItem, deleteRestockItem } from "../../graphql/mutations";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import { useState, useEffect } from "react";
 import { listPriceDropItems, listRestockItems } from "../../graphql/queries";
@@ -40,7 +40,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const initialFormState = { storeName: "", itemName: "", initialPrice: "", currentPrice: "" };
-
 
 toast.configure();
 
@@ -99,7 +98,12 @@ function EnhancedTableHeadPriceDrops(props) {
           />
         </TableCell>
         {headCellsPriceDrop.map((headCell) => (
-          <TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderByPriceDrop === headCell.id ? orderPriceDrop : false}>
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? "right" : "left"}
+            padding={headCell.disablePadding ? "none" : "normal"}
+            sortDirection={orderByPriceDrop === headCell.id ? orderPriceDrop : false}
+          >
             <TableSortLabel active={orderByPriceDrop === headCell.id} direction={orderByPriceDrop === headCell.id ? orderPriceDrop : "asc"} onClick={createSortHandler(headCell.id)}>
               {headCell.label}
               {orderByPriceDrop === headCell.id ? <span className={classesPriceDrop.visuallyHidden}>{orderPriceDrop === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
@@ -139,7 +143,12 @@ function EnhancedTableHeadBackInStock(props) {
           />
         </TableCell>
         {headCellsBackInStock.map((headCell) => (
-          <TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderByBackInStock === headCell.id ? orderBackInStock : false}>
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? "right" : "left"}
+            padding={headCell.disablePadding ? "none" : "normal"}
+            sortDirection={orderByBackInStock === headCell.id ? orderBackInStock : false}
+          >
             <TableSortLabel active={orderByBackInStock === headCell.id} direction={orderByBackInStock === headCell.id ? orderBackInStock : "asc"} onClick={createSortHandler(headCell.id)}>
               {headCell.label}
               {orderByBackInStock === headCell.id ? <span className={classesBackInStock.visuallyHidden}>{orderBackInStock === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
@@ -223,45 +232,45 @@ EnhancedTableToolbarPriceDrop.propTypes = {
 };
 
 const EnhancedTableToolbarBackInStock = (props) => {
-    const classesBackInStock = useToolbarStyles();
-    const { numSelectedBackInStock } = props;
-  
-    return (
-      <Toolbar
-        className={clsx(classesBackInStock.root, {
-          [classesBackInStock.highlight]: numSelectedBackInStock > 0,
-        })}
-      >
-        {numSelectedBackInStock > 0 ? (
-          <Typography className={classesBackInStock.title} color="inherit" variant="subtitle1" component="div">
-            {numSelectedBackInStock} selected
-          </Typography>
-        ) : (
-          <Typography className={classesBackInStock.title} variant="h6" id="tableTitle" component="div">
-            Back In Stock Items
-          </Typography>
-        )}
-  
-        {numSelectedBackInStock > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="delete">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Toolbar>
-    );
-  };
+  const classesBackInStock = useToolbarStyles();
+  const { numSelectedBackInStock } = props;
 
-  EnhancedTableToolbarBackInStock.propTypes = {
-    numSelectedBackInStock: PropTypes.number.isRequired,
-  };
+  return (
+    <Toolbar
+      className={clsx(classesBackInStock.root, {
+        [classesBackInStock.highlight]: numSelectedBackInStock > 0,
+      })}
+    >
+      {numSelectedBackInStock > 0 ? (
+        <Typography className={classesBackInStock.title} color="inherit" variant="subtitle1" component="div">
+          {numSelectedBackInStock} selected
+        </Typography>
+      ) : (
+        <Typography className={classesBackInStock.title} variant="h6" id="tableTitle" component="div">
+          Back In Stock Items
+        </Typography>
+      )}
+
+      {numSelectedBackInStock > 0 ? (
+        <Tooltip title="Delete">
+          <IconButton aria-label="delete">
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Tooltip title="Filter list">
+          <IconButton aria-label="filter list">
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
+      )}
+    </Toolbar>
+  );
+};
+
+EnhancedTableToolbarBackInStock.propTypes = {
+  numSelectedBackInStock: PropTypes.number.isRequired,
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -287,12 +296,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
-
-
 function MainDashboard() {
-  
   //////////////////////////////////////////////////////
   const [sentNotifications, setSentNotifications] = useState(false);
   // This initializes the blogs to an empty array.
@@ -303,14 +307,14 @@ function MainDashboard() {
   const [notifications, setNotifications] = useState([]);
 
   const notifyPriceDrop = (prevPrice, newPrice, itemName) => {
-    toast("Price Dropped for "+itemName+" from "+prevPrice+" to "+newPrice);
-    notifications[notifications.length] = "Price Dropped for "+itemName+" from "+prevPrice+" to "+newPrice;
+    toast("Price Dropped for " + itemName + " from " + prevPrice + " to " + newPrice);
+    notifications[notifications.length] = "Price Dropped for " + itemName + " from " + prevPrice + " to " + newPrice;
     setNotifications(notifications);
     console.log(notifications);
   };
   const notifyBackInStock = (itemName) => {
-    toast("Item "+itemName+" is back instock");
-    notifications[notifications.length] = "Item "+itemName+" is back instock";
+    toast("Item " + itemName + " is back instock");
+    notifications[notifications.length] = "Item " + itemName + " is back instock";
     setNotifications(notifications);
     console.log(notifications);
   };
@@ -323,103 +327,100 @@ function MainDashboard() {
     fetchRestockItems();
   }, []);
 
-
-  setInterval(function() {
+  setInterval(function () {
     // your code goes here...
-    console.log('Printing......')
+    console.log("Printing......");
     fetchPriceDropItems();
-  }, 60 * 1000); 
- 
+  }, 60 * 1000);
+
   const fetchPriceDropItems = async () => {
     try {
-        // Call the graphQL API to get all price drop items from DynamoDB
-        const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
-        // Extract the items
-        const priceDropList = priceDropData.data.listPriceDropItems.items;
+      // Call the graphQL API to get all price drop items from DynamoDB
+      const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
+      // Extract the items
+      const priceDropList = priceDropData.data.listPriceDropItems.items;
 
-        //loop through priceDropList and run scraper 
-        for(let i= 0; i<priceDropList.length; i++){
-            //insert webscraper run here on priceDropList[i].itemURL
-            let current_price = priceDropList[i].currentPrice;
-            current_price = current_price.replace("$", "");
-            current_price = parseFloat(current_price);
-            let initial_price = priceDropList[i].initialPrice;
-            let item_url = priceDropList[i].itemURL;
-            let id_i = priceDropList[i].id;
-            let store_name = priceDropList[i].storeName;
-            let item_name = priceDropList[i].itemName;
-            if(current_price>0){
-                console.log('New price is cheaper... BUY NOW', current_price);
-                if(!sentNotifications){
-                  notifyPriceDrop(current_price, 0, item_name);
-                  setSentNotifications(true);
-                }
-                let new_price = 0;
-                const updatePDItem = {
-                    id: id_i,
-                    storeName: store_name, 
-                    itemName: item_name, 
-                    currentPrice: new_price,
-                    initialPrice: current_price
-                  };
-                  
-                await API.graphql(graphqlOperation(updatePriceDropItem, {input: updatePDItem}));
-            }
-            else{
-                console.log('price has not dropped', current_price);
-            }
+      //loop through priceDropList and run scraper
+      for (let i = 0; i < priceDropList.length; i++) {
+        //insert webscraper run here on priceDropList[i].itemURL
+        let current_price = priceDropList[i].currentPrice;
+        current_price = current_price.replace("$", "");
+        current_price = parseFloat(current_price);
+        let initial_price = priceDropList[i].initialPrice;
+        let item_url = priceDropList[i].itemURL;
+        let id_i = priceDropList[i].id;
+        let store_name = priceDropList[i].storeName;
+        let item_name = priceDropList[i].itemName;
+        if (current_price > 0) {
+          console.log("New price is cheaper... BUY NOW", current_price);
+          if (!sentNotifications) {
+            notifyPriceDrop(current_price, 0, item_name);
+            setSentNotifications(true);
+          }
+          let new_price = 0;
+          const updatePDItem = {
+            id: id_i,
+            storeName: store_name,
+            itemName: item_name,
+            currentPrice: new_price,
+            initialPrice: current_price,
+          };
+
+          await API.graphql(graphqlOperation(updatePriceDropItem, { input: updatePDItem }));
+        } else {
+          console.log("price has not dropped", current_price);
         }
-        //storing itemURL in array
-        // let urlList = priceDropList.map(({currentPrice }) =>  currentPrice)
-        // setUrlPricedropList(urlList)
+      }
+      //storing itemURL in array
+      // let urlList = priceDropList.map(({currentPrice }) =>  currentPrice)
+      // setUrlPricedropList(urlList)
 
-        console.log('price drop item list', priceDropList);
-        // Update the priceDropList object
-        setPriceDropItems(priceDropList)
-
+      console.log("price drop item list", priceDropList);
+      // Update the priceDropList object
+      setPriceDropItems(priceDropList);
     } catch (error) {
-        console.log('error on fetching price drop items', error);
+      console.log("error on fetching price drop items", error);
     }
-};
+  };
 
-const fetchRestockItems = async () => {
-  try {
+  const fetchRestockItems = async () => {
+    try {
       const restockData = await API.graphql(graphqlOperation(listRestockItems));
       const restockList = restockData.data.listRestockItems.items;
 
-      //update stock 
-      for(let a=0; a<restockList.length; a++){
-          //insert webscraper run here on restockList[i].itemURL
-          let in_stock = restockList[a].inStock;
-          let item_url_restock = restockList[a].itemURL;
-          let id_restock = restockList[a].id;
-          let store_name_restock = restockList[a].storeName;
-          let item_name_restock = restockList[a].itemName;
-          //if current stock is false but webscraper result is true then update table
-          if(in_stock =='No' ){
-              // if(webscraper stock==true){
-                  notifyBackInStock(item_name_restock);
-                  console.log('Item is in stock');
-                  const updateRItem = {
-                  id: id_restock,
-                  storeName: store_name_restock, 
-                  itemName: item_name_restock, 
-                  inStock: 'Yes',
-              };
+      //update stock
+      for (let a = 0; a < restockList.length; a++) {
+        //insert webscraper run here on restockList[i].itemURL
+        let in_stock = restockList[a].inStock;
+        let item_url_restock = restockList[a].itemURL;
+        let id_restock = restockList[a].id;
+        let store_name_restock = restockList[a].storeName;
+        let item_name_restock = restockList[a].itemName;
+        //if current stock is false but webscraper result is true then update table
+        if (in_stock == "No") {
+          // if(webscraper stock==true){
+          notifyBackInStock(item_name_restock);
+          console.log("Item is in stock");
+          const updateRItem = {
+            id: id_restock,
+            storeName: store_name_restock,
+            itemName: item_name_restock,
+            inStock: "Yes",
+          };
 
-                  await API.graphql(graphqlOperation(updateRestockItem, {input: updateRItem}));
+          await API.graphql(graphqlOperation(updateRestockItem, { input: updateRItem }));
           // }
-              console.log('Not back in stock!')
-          }
+          console.log("Not back in stock!");
+        }
       }
-  
-      console.log('restock item list', restockList);
 
-      setRestockItems(restockList)
-  } catch (error) {
-      console.log('error on fetching price drop items', error);
-  }
-};
+      console.log("restock item list", restockList);
+
+      setRestockItems(restockList);
+    } catch (error) {
+      console.log("error on fetching price drop items", error);
+    }
+  };
   // const fetchPriceDropItems = async () => {
   //   try {
   //     Auth.currentAuthenticatedUser().then(console.log);
@@ -452,6 +453,7 @@ const fetchRestockItems = async () => {
     const createNewPDItem = {
       id: uuid(),
       username: "454359e3-344a-43b8-9153-a58f3cbd6c98",
+      itemURL: "www.amazon.ca",
       storeName,
       itemName,
       initialPrice,
@@ -494,7 +496,6 @@ const fetchRestockItems = async () => {
     setOrderPriceDrop(isAsc ? "desc" : "asc");
     setOrderByPriceDrop(property);
   };
-
 
   const handleRequestSortBackInStock = (event, property) => {
     const isAsc = orderByBackInStock === property && orderBackInStock === "asc";
@@ -549,6 +550,14 @@ const fetchRestockItems = async () => {
     enteredEcommerceSite: "",
   });
 
+  //state variable indicating which table to add the item from popup (either pricedrop or restock)
+  const [isPriceDrop, setPriceDrop] = useState(false);
+
+  const setTableType = (isPriceDropTable) => {
+    setinsertItemPopup(true);
+    setPriceDrop(isPriceDropTable);
+  };
+
   //state variable containing list of item search results
   const [searchResults, setSearchResults] = useState(defaultScraperData);
 
@@ -556,7 +565,7 @@ const fetchRestockItems = async () => {
   const defaultItemInfo = {
     name: "Loading...",
     price: {},
-    imageURL: "src/components/Popups/images/itemImage.png",
+    imageURL: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif?20170503175831",
     site: "",
     stock: false,
     productID: "",
@@ -592,7 +601,6 @@ const fetchRestockItems = async () => {
     });
   }, [searchValue]);
 
-
   const handleClickPriceDrop = (event, name) => {
     const selectedIndex = selectedPriceDrop.indexOf(name);
     let newSelected = [];
@@ -627,7 +635,6 @@ const fetchRestockItems = async () => {
     setSelectedBackInStock(newSelected);
   };
 
-
   const handleChangePagePriceDrop = (event, newPage) => {
     setPagePriceDrop(newPage);
   };
@@ -635,9 +642,6 @@ const fetchRestockItems = async () => {
   const handleChangePageBackInStock = (event, newPage) => {
     setPageBackInStock(newPage);
   };
-
-
-
 
   const handleChangeRowsPerPagePriceDrop = (event) => {
     setRowsPerPagePriceDrop(parseInt(event.target.value, 10));
@@ -711,12 +715,9 @@ const fetchRestockItems = async () => {
         <Paper className={classes.paper}>
           <EnhancedTableToolbarPriceDrop numSelectedPriceDrop={selectedPriceDrop.length} />
           <TableContainer>
-            <button className="add_item" onClick={() => setinsertItemPopup(true)}>
-              Add item Price Drop
+            <button className="add_item" onClick={() => setTableType(true)}>
+              Add Item
             </button>
-          
-
-            
 
             <Table className={classes.table} aria-labelledby="tableTitle" size={densePriceDrop ? "small" : "medium"} aria-label="enhanced table">
               <EnhancedTableHeadPriceDrops
@@ -775,8 +776,8 @@ const fetchRestockItems = async () => {
         <Paper className={classes.paper}>
           <EnhancedTableToolbarBackInStock numSelectedBackInStock={selectedBackInStock.length} />
           <TableContainer>
-            <button className="add_item" onClick={() => setinsertItemPopup(true)}>
-              Add item Back In Stock
+            <button className="add_item" onClick={() => setTableType(false)}>
+              Add Item
             </button>
             <Table className={classes.table} aria-labelledby="tableTitle" size={denseBackInStock ? "small" : "medium"} aria-label="enhanced table">
               <EnhancedTableHeadBackInStock
@@ -838,7 +839,7 @@ const fetchRestockItems = async () => {
         setTriggerItemURL={setItemURL}
         setTriggerSearchValues={setSearchValue}
       ></InsertItemPopup>
-      <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup} itemInfo={itemInfo}></ItemInfoPopup>
+      <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup} itemInfo={itemInfo} priceDropTable={isPriceDrop}></ItemInfoPopup>
       <ItemSearchResultPopup
         triggerItemSearchResult={itemSearchResultPopup}
         setTriggerItemSearchResult={setItemSearchResultPopup}

@@ -1,12 +1,12 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-
 class WebScraper {
   //html element locators
   #amazonElementLocators;
   #amazonSearchElementLocators;
   #ebayElementLocators;
+  #ebaySearchElementLocators;
   #walmartElementLocators;
   //mapping of supported domains to domain currency
   #supportedDomains;
@@ -41,7 +41,25 @@ class WebScraper {
         itemURL: [['span[data-component-type="s-product-image"]'], ["a"]],
       },
     };
-    this.#ebayElementLocators = {};
+    this.#ebayElementLocators = {
+      ca: {
+        price: [["#convbidPrice"]],
+        priceAlt: [['span[itemprop="price"]']],
+        imageURL: [["#icImg"]],
+        name: [['div[class*="x-item-title"]'], ["h1"], ["span"]],
+        availability: [["#qtySubTxt"]],
+        productID: [["#descItemNumber"]],
+      },
+    };
+    this.#ebaySearchElementLocators = {
+      ca: {
+        outerDiv: [[".srp-results"], ["li"]],
+        itemURL: [["a"]],
+        name: [[".s-item__title"]],
+        price: [['span[class*="s-item__price"]']],
+        imageURL: [["img"]],
+      },
+    };
     this.#supportedDomains = { ca: "CAD", com: "USD" };
     this.#supportedWebsites = {
       amazon: { itemInfo: this.#getAmazonItemInfo, searchInfo: this.#getAmazonSearchInfo },
@@ -236,9 +254,108 @@ class WebScraper {
     return info;
   }
 
-  #getEbayItemInfo(self, loader, domain) {}
+  #getEbayItemPrice(loader, domain) {
+    let node = this.#getElementWithLoader(loader, this.#ebayElementLocators[domain].price);
+    let price = node.text();
+    if (price == "") {
+      node = this.#getElementWithLoader(loader, this.#ebayElementLocators[domain].priceAlt);
+      price = node.attr("content");
+    } else {
+      //need to extract the number only from the string
+      price = price.match(/\d+/g).join(".");
+    }
+    return { amount: price, currency: this.#supportedDomains[domain] };
+  }
 
-  #getEbaySearchInfo(self, html, domain) {}
+  #getEbayItemImageURL(loader, domain) {
+    const node = this.#getElementWithLoader(loader, this.#ebayElementLocators[domain].imageURL);
+    // console.log(node.html());
+    const imageURL = node.attr("src");
+    return imageURL;
+  }
+
+  #getEbayItemName(loader, domain) {
+    const node = this.#getElementWithLoader(loader, this.#ebayElementLocators[domain].name);
+    const name = node.text();
+    return name;
+  }
+
+  #getEbayItemStock(loader, domain) {
+    const node = this.#getElementWithLoader(loader, this.#ebayElementLocators[domain].availability);
+    const availability = node.text();
+    //check if the availability string contains a number, or has substring "one left" indicating that item is in stock
+    if (availability.toLowerCase().includes("last one") || /\d/.test(availability)) {
+      return true;
+    }
+    return false;
+  }
+  #getEbayProductID(loader, domain) {
+    const node = this.#getElementWithLoader(loader, this.#ebayElementLocators[domain].productID);
+    const productID = node.text();
+    return productID;
+  }
+
+  #getEbayItemInfo(self, loader, domain) {
+    let info = {};
+    info["site"] = "ebay." + domain;
+    info["price"] = self.#getEbayItemPrice(loader, domain);
+    info["imageURL"] = self.#getEbayItemImageURL(loader, domain);
+    info["name"] = self.#getEbayItemName(loader, domain);
+    info["stock"] = self.#getEbayItemStock(loader, domain);
+    info["productID"] = self.#getEbayProductID(loader, domain);
+    info["options"] = {};
+    return info;
+  }
+
+  #getEbaySearchInfo(self, html, domain) {
+    //load the HTML into a cheerio loader object
+    const loader = cheerio.load(html, {
+      xml: {
+        normalizeWhitespace: true,
+      },
+    });
+
+    let info = [];
+    const searchResults = self.#getElementWithLoader(loader, self.#ebaySearchElementLocators[domain].outerDiv);
+    const numItems = searchResults.length;
+
+    let current = searchResults.first();
+
+    for (let i = 0; i < numItems; i++) {
+      if (current[0].name != "li") {
+        current = current.next();
+        continue;
+      }
+
+      let currentItemInfo = {};
+
+      const currentItemLoader = cheerio.load(current.html(), {
+        xml: {
+          normalizeWhitespace: true,
+        },
+      });
+
+      //get the URL of the item
+      currentItemInfo["URL"] = self.#getElementWithLoader(currentItemLoader, self.#ebaySearchElementLocators[domain].itemURL).attr("href");
+
+      //get the productID of the item from the URL iteself
+      currentItemInfo["productID"] = currentItemInfo["URL"].match(/\d+/g)[0];
+
+      //get the item name
+      currentItemInfo["name"] = self.#getElementWithLoader(currentItemLoader, self.#ebaySearchElementLocators[domain].name).text();
+
+      //get the item price
+      currentItemInfo["price"] = self.#getElementWithLoader(currentItemLoader, self.#ebaySearchElementLocators[domain].price).text().match(/\d+/g).join(".");
+
+      //get the item image URL
+      currentItemInfo["imageURL"] = self.#getElementWithLoader(currentItemLoader, self.#ebaySearchElementLocators[domain].imageURL).attr("src");
+
+      current = current.next();
+      info.push(currentItemInfo);
+    }
+
+    return info;
+  }
 
   #getWalmartItemInfo(self, loader, domain) {}
 
@@ -290,6 +407,11 @@ class WebScraper {
     if (site == "amazon") {
       if (domain == "ca") {
         URL = `https://www.amazon.ca/s?k=${encodeURIComponent(searchString)}`;
+      }
+    }
+    if (site == "ebay") {
+      if (domain == "ca") {
+        URL = `https://www.ebay.ca/sch/i.html?_nkw=${encodeURIComponent(searchString)}`;
       }
     }
 
