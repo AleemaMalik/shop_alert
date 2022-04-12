@@ -244,7 +244,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MainDashboard() {
+function MainDashboard(props) {
   //////////////////////////////////////////////////////
 
   // This initializes the blogs to an empty array.
@@ -277,6 +277,17 @@ function MainDashboard() {
 
   const fetchPriceDropItems = async () => {
     try {
+      // If the user is authenticated get a sign-out btn. 
+      Auth.currentAuthenticatedUser({
+        bypassCache: false  // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+      }).then(user => {
+        document.getElementById("loginBtn").style.visibility = "hidden";
+        document.getElementById("signoutBtn").style.visibility = "visible";
+      })
+      .catch(err => {
+
+      });
+      // Otherwise keep the login button
       // Call the graphQL API to get all price drop items from DynamoDB
       const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
       // Extract the items
@@ -479,13 +490,13 @@ function MainDashboard() {
 
   return (
     <div className="App">
-      <button onClick={notifyPriceDrop}>Notify Price Drop!</button>
+      {/* <button onClick={notifyPriceDrop}>Notify Price Drop!</button>
       <button onClick={notifyBackInStock}>Notify Back In Stock!</button>
       <input onChange={(e) => setFormData({ ...formData, storeName: e.target.value })} placeholder="Store" value={formData.storeName} />
       <input onChange={(e) => setFormData({ ...formData, itemName: e.target.value })} placeholder="Item name" value={formData.itemName} />
       <input onChange={(e) => setFormData({ ...formData, initialPrice: e.target.value })} placeholder="Start price" value={formData.initialPrice} />
       <input onChange={(e) => setFormData({ ...formData, currentPrice: e.target.value })} placeholder="Current Price" value={formData.currentPrice} />
-      <button onClick={createPDItem}> Create Item</button>
+      <button onClick={createPDItem}> Create Item</button> */}
       {/* <div style={{marginBottom:30}}>
             {  
             priceDropItemData.map(note => (
