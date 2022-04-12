@@ -382,6 +382,14 @@ function MainDashboard() {
     enteredEcommerceSite: "",
   });
 
+  //state variable indicating which table to add the item from popup (either pricedrop or restock)
+  const [isPriceDrop, setPriceDrop] = useState(false);
+
+  const setTableType = (isPriceDropTable) => {
+    setinsertItemPopup(true);
+    setPriceDrop(isPriceDropTable);
+  };
+
   //state variable containing list of item search results
   const [searchResults, setSearchResults] = useState(defaultScraperData);
 
@@ -516,8 +524,8 @@ function MainDashboard() {
         <Paper className={classes.paper}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
-            <button className="add_item" onClick={() => setinsertItemPopup(true)} id="price-drop-table">
-              Add item
+            <button className="add_item" onClick={() => setTableType(true)}>
+              Add Item
             </button>
 
             <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
@@ -577,8 +585,8 @@ function MainDashboard() {
         <Paper className={classes.paper}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>
-            <button className="add_item" onClick={() => setinsertItemPopup(true)} id="restock-table">
-              Add item
+            <button className="add_item" onClick={() => setTableType(false)}>
+              Add Item
             </button>
             <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
               <EnhancedTableHeadBackInStock
@@ -640,7 +648,7 @@ function MainDashboard() {
         setTriggerItemURL={setItemURL}
         setTriggerSearchValues={setSearchValue}
       ></InsertItemPopup>
-      <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup} itemInfo={itemInfo}></ItemInfoPopup>
+      <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup} itemInfo={itemInfo} priceDropTable={isPriceDrop}></ItemInfoPopup>
       <ItemSearchResultPopup
         triggerItemSearchResult={itemSearchResultPopup}
         setTriggerItemSearchResult={setItemSearchResultPopup}
