@@ -10,7 +10,7 @@ import "./MainDashboard.css";
 import InsertItemPopup from "../Popups/InsertItemPopup";
 import ItemInfoPopup from "../Popups/ItemInfoPopup";
 import ItemSearchResultPopup from "../Popups/ItemSearchResultPopup";
-import WebScraper from "../WebScraper/WebScraper";
+import WebScraper from "../Webscraper/WebScraper";
 import { defaultScraperData } from "../Popups/ScraperData";
 
 import PropTypes from "prop-types";

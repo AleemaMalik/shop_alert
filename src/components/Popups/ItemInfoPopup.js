@@ -3,7 +3,7 @@ import itemImage from "./images/itemImage.png";
 import "./ItemInfoPopup.css";
 import { createPriceDropItem, createRestockItem} from "../../graphql/mutations";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
-import WebScraper from "../WebScraper/WebScraper";
+import WebScraper from "../Webscraper/WebScraper";
 import { v4 as uuid } from "uuid";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import Pool from "../Authentication/UserPool";
