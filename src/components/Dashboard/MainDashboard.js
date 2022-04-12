@@ -236,7 +236,7 @@ const EnhancedTableToolbarBackInStock = (props) => {
           </Typography>
         ) : (
           <Typography className={classesBackInStock.title} variant="h6" id="tableTitle" component="div">
-            Price Drop Items
+            Back In Stock Items
           </Typography>
         )}
   
