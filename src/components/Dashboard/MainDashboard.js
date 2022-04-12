@@ -1,5 +1,6 @@
 //import React from 'react'
 import { createPriceDropItem, updatePriceDropItem, deletePriceDropItem } from "../../graphql/mutations";
+import {createRestockItem, updateRestockItem, deleteRestockItem } from '../../graphql/mutations'
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import { useState, useEffect } from "react";
 import { listPriceDropItems, listRestockItems } from "../../graphql/queries";
@@ -39,6 +40,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const initialFormState = { storeName: "", itemName: "", initialPrice: "", currentPrice: "" };
+
 
 toast.configure();
 
@@ -286,9 +288,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function MainDashboard() {
-  //////////////////////////////////////////////////////
 
+
+
+function MainDashboard() {
+  
+  //////////////////////////////////////////////////////
+  const [sentNotifications, setSentNotifications] = useState(false);
   // This initializes the blogs to an empty array.
   const [priceDropItems, setPriceDropItems] = useState([]);
   const [restockItems, setRestockItems] = useState([]);
@@ -317,31 +323,128 @@ function MainDashboard() {
     fetchRestockItems();
   }, []);
 
+
+  setInterval(function() {
+    // your code goes here...
+    console.log('Printing......')
+    fetchPriceDropItems();
+  }, 60 * 1000); 
+ 
   const fetchPriceDropItems = async () => {
     try {
-      Auth.currentAuthenticatedUser().then(console.log);
-      // Call the graphQL API to get all price drop items from DynamoDB
-      const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
-      // Extract the items
-      const priceDropList = priceDropData.data.listPriceDropItems.items;
-      console.log("price drop item list", priceDropList);
-      // Update the priceDropList object
-      setPriceDropItems(priceDropList);
-    } catch (error) {
-      console.log("error on fetching price drop items", error);
-    }
-  };
+        // Call the graphQL API to get all price drop items from DynamoDB
+        const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
+        // Extract the items
+        const priceDropList = priceDropData.data.listPriceDropItems.items;
 
-  const fetchRestockItems = async () => {
-    try {
+        //loop through priceDropList and run scraper 
+        for(let i= 0; i<priceDropList.length; i++){
+            //insert webscraper run here on priceDropList[i].itemURL
+            let current_price = priceDropList[i].currentPrice;
+            current_price = current_price.replace("$", "");
+            current_price = parseFloat(current_price);
+            let initial_price = priceDropList[i].initialPrice;
+            let item_url = priceDropList[i].itemURL;
+            let id_i = priceDropList[i].id;
+            let store_name = priceDropList[i].storeName;
+            let item_name = priceDropList[i].itemName;
+            if(current_price>0){
+                console.log('New price is cheaper... BUY NOW', current_price);
+                if(!sentNotifications){
+                  notifyPriceDrop(current_price, 0, item_name);
+                  setSentNotifications(true);
+                }
+                let new_price = 0;
+                const updatePDItem = {
+                    id: id_i,
+                    storeName: store_name, 
+                    itemName: item_name, 
+                    currentPrice: new_price,
+                    initialPrice: current_price
+                  };
+                  
+                await API.graphql(graphqlOperation(updatePriceDropItem, {input: updatePDItem}));
+            }
+            else{
+                console.log('price has not dropped', current_price);
+            }
+        }
+        //storing itemURL in array
+        // let urlList = priceDropList.map(({currentPrice }) =>  currentPrice)
+        // setUrlPricedropList(urlList)
+
+        console.log('price drop item list', priceDropList);
+        // Update the priceDropList object
+        setPriceDropItems(priceDropList)
+
+    } catch (error) {
+        console.log('error on fetching price drop items', error);
+    }
+};
+
+const fetchRestockItems = async () => {
+  try {
       const restockData = await API.graphql(graphqlOperation(listRestockItems));
       const restockList = restockData.data.listRestockItems.items;
-      console.log("restock list", restockList);
-      setRestockItems(restockList);
-    } catch (error) {
-      console.log("error on fetching price drop items", error);
-    }
-  };
+
+      //update stock 
+      for(let a=0; a<restockList.length; a++){
+          //insert webscraper run here on restockList[i].itemURL
+          let in_stock = restockList[a].inStock;
+          let item_url_restock = restockList[a].itemURL;
+          let id_restock = restockList[a].id;
+          let store_name_restock = restockList[a].storeName;
+          let item_name_restock = restockList[a].itemName;
+          //if current stock is false but webscraper result is true then update table
+          if(in_stock =='No' ){
+              // if(webscraper stock==true){
+                  notifyBackInStock(item_name_restock);
+                  console.log('Item is in stock');
+                  const updateRItem = {
+                  id: id_restock,
+                  storeName: store_name_restock, 
+                  itemName: item_name_restock, 
+                  inStock: 'Yes',
+              };
+
+                  await API.graphql(graphqlOperation(updateRestockItem, {input: updateRItem}));
+          // }
+              console.log('Not back in stock!')
+          }
+      }
+  
+      console.log('restock item list', restockList);
+
+      setRestockItems(restockList)
+  } catch (error) {
+      console.log('error on fetching price drop items', error);
+  }
+};
+  // const fetchPriceDropItems = async () => {
+  //   try {
+  //     Auth.currentAuthenticatedUser().then(console.log);
+  //     // Call the graphQL API to get all price drop items from DynamoDB
+  //     const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
+  //     // Extract the items
+  //     const priceDropList = priceDropData.data.listPriceDropItems.items;
+  //     console.log("price drop item list", priceDropList);
+  //     // Update the priceDropList object
+  //     setPriceDropItems(priceDropList);
+  //   } catch (error) {
+  //     console.log("error on fetching price drop items", error);
+  //   }
+  // };
+
+  // const fetchRestockItems = async () => {
+  //   try {
+  //     const restockData = await API.graphql(graphqlOperation(listRestockItems));
+  //     const restockList = restockData.data.listRestockItems.items;
+  //     console.log("restock list", restockList);
+  //     setRestockItems(restockList);
+  //   } catch (error) {
+  //     console.log("error on fetching price drop items", error);
+  //   }
+  // };
 
   const createPDItem = async () => {
     console.log("formData", formData);

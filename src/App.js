@@ -27,7 +27,6 @@ function App() {
 
       <Routes>
         <Route path="shopAlert/" element={<HomePage />} />
-
         <Route path="shopAlert/dashboard" element={<MainDashboard />} />
         <Route path="shopAlert/signup" element={<SignUp />} />
         <Route path="shopAlert/login" element={<LogIn />} />
