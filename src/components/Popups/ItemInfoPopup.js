@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import itemImage from "./images/itemImage.png";
 import "./ItemInfoPopup.css";
-import { createPriceDropItem, createRestockItem} from "../../graphql/mutations";
+import { createPriceDropItem, createRestockItem } from "../../graphql/mutations";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import WebScraper from "../Webscraper/WebScraper";
 import { v4 as uuid } from "uuid";
@@ -34,7 +34,7 @@ function ItemInfoPopup(props) {
     }
 
     // Create a price drop table item
-    if(props.priceDropTable){
+    if (props.priceDropTable) {
       const createNewPDItem = {
         id: uuid(),
         username: attributes.email,
@@ -53,24 +53,24 @@ function ItemInfoPopup(props) {
         console.log("error on creating price drop items", error);
       }
     } else {
-        let isInStock = "Yes"
-        props.itemInfo.stock ? isInStock = "Yes" : isInStock = "No"
-        const createNewRestockItem = {
-          id: uuid(),
-          username: attributes.email,
-          itemURL: props.itemInfo.URL,
-          storeName: storeName,
-          itemName: props.itemInfo.name,
-          inStock: isInStock,
-        };
-        console.log(createNewRestockItem);
+      let isInStock = "Yes";
+      props.itemInfo.stock ? (isInStock = "Yes") : (isInStock = "No");
+      const createNewRestockItem = {
+        id: uuid(),
+        username: attributes.email,
+        itemURL: props.itemInfo.URL,
+        storeName: storeName,
+        itemName: props.itemInfo.name,
+        inStock: isInStock,
+      };
+      console.log(createNewRestockItem);
 
-        // Need to upload to dynamoDB, graphqlOperations takes query and variable
-        try {
-          await API.graphql(graphqlOperation(createRestockItem, { input: createNewRestockItem }));
-        } catch (error) {
-          console.log("error on creating restock items", error);
-        }      
+      // Need to upload to dynamoDB, graphqlOperations takes query and variable
+      try {
+        await API.graphql(graphqlOperation(createRestockItem, { input: createNewRestockItem }));
+      } catch (error) {
+        console.log("error on creating restock items", error);
+      }
     }
   };
 
