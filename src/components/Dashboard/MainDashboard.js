@@ -298,7 +298,7 @@ const useStyles = makeStyles((theme) => ({
 
 function MainDashboard() {
   //////////////////////////////////////////////////////
-  const [sentNotifications, setSentNotifications] = useState(false);
+  //const [sentNotifications, setSentNotifications] = useState(false);
   // This initializes the blogs to an empty array.
   const [priceDropItems, setPriceDropItems] = useState([]);
   const [restockItems, setRestockItems] = useState([]);
@@ -307,7 +307,7 @@ function MainDashboard() {
   const [notifications, setNotifications] = useState([]);
 
   const notifyPriceDrop = (prevPrice, newPrice, itemName) => {
-    toast("Price Dropped for " + itemName + " from " + prevPrice + " to " + newPrice);
+    toast("Price Dropped for " + itemName + " from $" + prevPrice + " to $" + newPrice);
     notifications[notifications.length] = "Price Dropped for " + itemName + " from " + prevPrice + " to " + newPrice;
     setNotifications(notifications);
     console.log(notifications);
@@ -329,11 +329,13 @@ function MainDashboard() {
 
   setInterval(function () {
     // your code goes here...
-    console.log("Printing......");
+    //console.log("Printing......");
     fetchPriceDropItems();
+    fetchRestockItems();
   }, 60 * 1000);
 
   const fetchPriceDropItems = async () => {
+    console.log("checking for price drops");
     try {
       // Call the graphQL API to get all price drop items from DynamoDB
       const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
@@ -341,35 +343,38 @@ function MainDashboard() {
       const priceDropList = priceDropData.data.listPriceDropItems.items;
 
       //loop through priceDropList and run scraper
+      let scraper = new WebScraper();
       for (let i = 0; i < priceDropList.length; i++) {
-        //insert webscraper run here on priceDropList[i].itemURL
-        let current_price = priceDropList[i].currentPrice;
-        current_price = current_price.replace("$", "");
-        current_price = parseFloat(current_price);
-        let initial_price = priceDropList[i].initialPrice;
         let item_url = priceDropList[i].itemURL;
-        let id_i = priceDropList[i].id;
-        let store_name = priceDropList[i].storeName;
-        let item_name = priceDropList[i].itemName;
-        if (current_price > 0) {
-          console.log("New price is cheaper... BUY NOW", current_price);
-          if (!sentNotifications) {
-            notifyPriceDrop(current_price, 0, item_name);
-            setSentNotifications(true);
-          }
-          let new_price = 0;
-          const updatePDItem = {
-            id: id_i,
-            storeName: store_name,
-            itemName: item_name,
-            currentPrice: new_price,
-            initialPrice: current_price,
-          };
+        scraper.getInfoFromURL(item_url).then(async (info) => {
+          //insert webscraper run here on priceDropList[i].itemURL
+          let current_price = priceDropList[i].currentPrice;
+          current_price = current_price.replace("$", "");
+          current_price = parseFloat(current_price);
+          let initial_price = priceDropList[i].initialPrice;
+          let id_i = priceDropList[i].id;
+          let store_name = priceDropList[i].storeName;
+          let item_name = priceDropList[i].itemName;
+          if (current_price > info.price.amount) {
+            console.log("New price is cheaper... BUY NOW", current_price);
 
-          await API.graphql(graphqlOperation(updatePriceDropItem, { input: updatePDItem }));
-        } else {
-          console.log("price has not dropped", current_price);
-        }
+            notifyPriceDrop(current_price, info.price.amount, item_name);
+            // console.log("Sent Notification");
+
+            let new_price = info.price.amount;
+            const updatePDItem = {
+              id: id_i,
+              storeName: store_name,
+              itemName: item_name,
+              currentPrice: new_price,
+              initialPrice: initial_price,
+            };
+
+            await API.graphql(graphqlOperation(updatePriceDropItem, { input: updatePDItem }));
+          } else {
+            console.log("price has not dropped", current_price);
+          }
+        });
       }
       //storing itemURL in array
       // let urlList = priceDropList.map(({currentPrice }) =>  currentPrice)
@@ -389,29 +394,33 @@ function MainDashboard() {
       const restockList = restockData.data.listRestockItems.items;
 
       //update stock
+      let scraper = new WebScraper();
       for (let a = 0; a < restockList.length; a++) {
-        //insert webscraper run here on restockList[i].itemURL
-        let in_stock = restockList[a].inStock;
         let item_url_restock = restockList[a].itemURL;
-        let id_restock = restockList[a].id;
-        let store_name_restock = restockList[a].storeName;
-        let item_name_restock = restockList[a].itemName;
-        //if current stock is false but webscraper result is true then update table
-        if (in_stock == "No") {
-          // if(webscraper stock==true){
-          notifyBackInStock(item_name_restock);
-          console.log("Item is in stock");
-          const updateRItem = {
-            id: id_restock,
-            storeName: store_name_restock,
-            itemName: item_name_restock,
-            inStock: "Yes",
-          };
+        scraper.getInfoFromURL(item_url_restock).then(async (info) => {
+          //insert webscraper run here on restockList[i].itemURL
+          let in_stock = restockList[a].inStock;
+          let id_restock = restockList[a].id;
+          let store_name_restock = restockList[a].storeName;
+          let item_name_restock = restockList[a].itemName;
+          //if current stock is false but webscraper result is true then update table
+          if (in_stock == "No") {
+            if (info.stock) {
+              notifyBackInStock(item_name_restock);
+              console.log("Item is in stock");
+              const updateRItem = {
+                id: id_restock,
+                storeName: store_name_restock,
+                itemName: item_name_restock,
+                inStock: "Yes",
+              };
 
-          await API.graphql(graphqlOperation(updateRestockItem, { input: updateRItem }));
-          // }
-          console.log("Not back in stock!");
-        }
+              await API.graphql(graphqlOperation(updateRestockItem, { input: updateRItem }));
+            } else {
+              console.log(item_name_restock + "Not back in stock!");
+            }
+          }
+        });
       }
 
       console.log("restock item list", restockList);

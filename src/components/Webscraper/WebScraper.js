@@ -111,6 +111,8 @@ class WebScraper {
     let amount = node.html();
     if (amount == null) {
       amount = "Price not found";
+    } else {
+      amount = amount.match(/\d+/g).join(".");
     }
     return { amount: amount, currency: this.#supportedDomains[domain] };
   }
