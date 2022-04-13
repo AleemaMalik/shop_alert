@@ -242,7 +242,7 @@ class WebScraper {
       //get the product name
       currentItemInfo["name"] = self.#getElementWithLoader(currentItemLoader, self.#amazonSearchElementLocators[domain].name).text();
       //get the product price
-      currentItemInfo["price"] = self.#getElementWithLoader(currentItemLoader, self.#amazonSearchElementLocators[domain].price).html();
+      currentItemInfo["price"] = self.#getElementWithLoader(currentItemLoader, self.#amazonSearchElementLocators[domain].price).html().match(/\d+/g).join(".");
       //get the image URL
       currentItemInfo["imageURL"] = self.#getElementWithLoader(currentItemLoader, self.#amazonSearchElementLocators[domain].imageURL).attr("src");
       //get the URL of the item

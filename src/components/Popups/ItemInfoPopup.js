@@ -8,6 +8,7 @@ import { v4 as uuid } from "uuid";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import Pool from "../Authentication/UserPool";
 import { Auth } from "aws-amplify";
+import { defaultItemInfo } from "./ScraperData";
 function ItemInfoPopup(props) {
   console.log(props.itemInfo);
 
@@ -88,6 +89,7 @@ function ItemInfoPopup(props) {
   } else {
     popupHeader = "Add Item to Restock Tracking";
   }
+
   return props.triggerInfoPopup ? (
     <div className="item-info-popup">
       <div className="item-info-popup-content">
@@ -99,20 +101,28 @@ function ItemInfoPopup(props) {
             {props.itemInfo.name}
           </a>
         </h5>
-        <h3>{props.itemInfo.price.amount + " " + props.itemInfo.price.currency}</h3>
+        <h3>${props.itemInfo.price.amount + " " + props.itemInfo.price.currency}</h3>
         <form>
-          <label for="colors">Choose a color:</label>
+          {/* <label for="colors">Choose a color:</label>
           <select name="colors" id="colors">
             <option>Black-Red</option>
             <option>White</option>
             <option>Matte-Black</option>
-          </select>
+          </select> */}
           <br />
           {/* <button onClick={(e) => {this.clickMe(e, someParameter);}}>Click Me!</button> */}
           {/* <button onClick={submitHandler}> Create Item</button> */}
           <input className="item-info-submit" type="submit" value="Submit" onClick={submitHandler} />
         </form>
-        <button onClick={() => props.setTriggeritemInfo(false)}>Cancel</button>
+        <button
+          onClick={() => {
+            props.setTriggeritemInfo(false);
+            props.setItemInfo(defaultItemInfo);
+            props.setItemURL("");
+          }}
+        >
+          Cancel
+        </button>
       </div>
     </div>
   ) : (

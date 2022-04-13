@@ -1,5 +1,5 @@
 import React from "react";
-import { defaultScraperData } from "./ScraperData";
+import { defaultSearchResults } from "./ScraperData";
 import "./ItemSearchPopup.css";
 
 function ItemSearchResultPopup(props) {
@@ -39,7 +39,13 @@ function ItemSearchResultPopup(props) {
   return props.triggerItemSearchResult ? (
     <div className="item-search1">
       <div className="item-search2">
-        <button className="insert-button2" onClick={() => props.setTriggerItemSearchResult(false)}>
+        <button
+          className="insert-button2"
+          onClick={() => {
+            props.setTriggerItemSearchResult(false);
+            props.setTriggerSearchResults(defaultSearchResults);
+          }}
+        >
           New search
         </button>
 
@@ -58,7 +64,7 @@ function ItemSearchResultPopup(props) {
                     Product code: {val.productID}
                   </div>
                   <div className="item-price" itemurl={val.URL}>
-                    {val.price}
+                    ${val.price}
                   </div>
                 </div>
               </button>

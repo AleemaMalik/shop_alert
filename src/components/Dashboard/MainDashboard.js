@@ -12,7 +12,7 @@ import InsertItemPopup from "../Popups/InsertItemPopup";
 import ItemInfoPopup from "../Popups/ItemInfoPopup";
 import ItemSearchResultPopup from "../Popups/ItemSearchResultPopup";
 import WebScraper from "../Webscraper/WebScraper";
-import { defaultScraperData } from "../Popups/ScraperData";
+import { defaultSearchResults, defaultItemInfo } from "../Popups/ScraperData";
 
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -639,19 +639,7 @@ function MainDashboard() {
   };
 
   //state variable containing list of item search results
-  const [searchResults, setSearchResults] = useState(defaultScraperData);
-
-  //default Item Info displayed (displayed while actual info is loading HTTP result)
-  const defaultItemInfo = {
-    name: "Loading...",
-    price: {},
-    imageURL: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Loading_2.gif?20170503175831",
-    site: "",
-    stock: false,
-    productID: "",
-    options: {},
-    URL: "",
-  };
+  const [searchResults, setSearchResults] = useState(defaultSearchResults);
 
   //state variable for item info to be displaye in item info popup
   const [itemInfo, setItemInfo] = useState(defaultItemInfo);
@@ -670,6 +658,7 @@ function MainDashboard() {
         options: info.options,
         URL: info.URL,
       });
+      console.log("Set Item Info");
     });
   }, [itemURL]);
 
@@ -919,13 +908,21 @@ function MainDashboard() {
         setTriggerItemURL={setItemURL}
         setTriggerSearchValues={setSearchValue}
       ></InsertItemPopup>
-      <ItemInfoPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup} itemInfo={itemInfo} priceDropTable={isPriceDrop}></ItemInfoPopup>
+      <ItemInfoPopup
+        triggerInfoPopup={itemInfoPopup}
+        setTriggeritemInfo={setItemInfoPopup}
+        itemInfo={itemInfo}
+        priceDropTable={isPriceDrop}
+        setItemInfo={setItemInfo}
+        setItemURL={setItemURL}
+      ></ItemInfoPopup>
       <ItemSearchResultPopup
         triggerItemSearchResult={itemSearchResultPopup}
         setTriggerItemSearchResult={setItemSearchResultPopup}
         setTriggerItemInfo={setItemInfoPopup}
         setTriggerItemURL={setItemURL}
         searchResults={searchResults}
+        setTriggerSearchResults={setSearchResults}
       ></ItemSearchResultPopup>
 
       {/* <ItemSearchResultPopup triggerInfoPopup={itemInfoPopup} setTriggeritemInfo={setItemInfoPopup}></ItemSearchResultPopup> */}
