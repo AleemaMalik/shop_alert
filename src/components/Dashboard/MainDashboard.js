@@ -692,11 +692,11 @@ function MainDashboard() {
     <div className="App">
       {/* <button onClick={() => notifyPriceDrop(10, 9,"item name test")}>Notify Price Drop!</button>
       <button onClick={() => notifyBackInStock("back instock item test")}>Notify Back In Stock!</button> */}
-      <input onChange={(e) => setFormData({ ...formData, storeName: e.target.value })} placeholder="Store" value={formData.storeName} />
+      {/* <input onChange={(e) => setFormData({ ...formData, storeName: e.target.value })} placeholder="Store" value={formData.storeName} />
       <input onChange={(e) => setFormData({ ...formData, itemName: e.target.value })} placeholder="Item name" value={formData.itemName} />
       <input onChange={(e) => setFormData({ ...formData, initialPrice: e.target.value })} placeholder="Start price" value={formData.initialPrice} />
       <input onChange={(e) => setFormData({ ...formData, currentPrice: e.target.value })} placeholder="Current Price" value={formData.currentPrice} />
-      <button onClick={createPDItem}> Create Item</button>
+      <button onClick={createPDItem}> Create Item</button> */}
       {/* <div style={{marginBottom:30}}>
             {  
             priceDropItemData.map(note => (
