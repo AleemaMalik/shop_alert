@@ -8,6 +8,8 @@ export function TopBarBtn(){
     async function signOut() {
         try {
             await Auth.signOut();
+            document.getElementById("loginBtn").style.visibility = "visible";
+            document.getElementById("signoutBtn").style.visibility = "hidden";
         } catch (error) {
             console.log('error signing out: ', error);
         }
