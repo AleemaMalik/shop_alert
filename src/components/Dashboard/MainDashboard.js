@@ -323,9 +323,20 @@ function MainDashboard() {
   // Problem: fetchPriceDropItems updates states which renders the page. This will result in infinite loop
   // Soln: Add a second parameter to indicate this should only happen once
   useEffect(() => {
+    checkLoggedIn();
     fetchPriceDropItems();
     fetchRestockItems();
   }, []);
+  const checkLoggedIn = async () => {
+    // If the user is authenticated get a sign-out btn. 
+    Auth.currentAuthenticatedUser({
+      bypassCache: false  // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+    }).then(user => {
+      document.getElementById("loginBtn").style.visibility = "hidden";
+      document.getElementById("signoutBtn").style.visibility = "visible";
+    })
+    .catch(err => {console.log(err)});
+  }
 
   setInterval(function () {
     // your code goes here...
