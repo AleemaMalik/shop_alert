@@ -322,17 +322,53 @@ function MainDashboard() {
   // This tells the app to run fetchPriceDropItems everytime MainDashboard.js is rendered
   // Problem: fetchPriceDropItems updates states which renders the page. This will result in infinite loop
   // Soln: Add a second parameter to indicate this should only happen once
-  useEffect(() => {
-    fetchPriceDropItems();
-    fetchRestockItems();
-  }, []);
+  // useEffect(() => {
+  //   fetchPriceDropItems();
+  //   fetchRestockItems();
+  // }, []);
 
-  setInterval(function () {
-    // your code goes here...
-    //console.log("Printing......");
-    fetchPriceDropItems();
-    fetchRestockItems();
-  }, 60 * 1000);
+  // setInterval(function () {
+  //   // your code goes here...
+  //   //console.log("Printing......");
+  //   fetchPriceDropItems();
+  //   fetchRestockItems();
+  // }, 60 * 1000);
+
+  useEffect(async () => {
+    //on app startup, populate the tables with data from DB
+    const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
+    const priceDropList = priceDropData.data.listPriceDropItems.items;
+    setPriceDropItems(priceDropList);
+
+    const restockData = await API.graphql(graphqlOperation(listRestockItems));
+    const restockList = restockData.data.listRestockItems.items;
+    setRestockItems(restockList);
+
+    //schedule an interval timer for fetching price drop item updates
+    setInterval(() => {
+      fetchPriceDropItems();
+    }, 10 * 1000);
+
+    //schedule an interval timer for fetching restock item updates
+    setInterval(() => {
+      fetchRestockItems();
+    }, 10 * 1000);
+
+    //schedule interval timers for updating tables on the front end with data from DB
+    setInterval(async () => {
+      const priceDropData = await API.graphql(graphqlOperation(listPriceDropItems));
+      const priceDropList = priceDropData.data.listPriceDropItems.items;
+      setPriceDropItems(priceDropList);
+      console.log("updated price drop table");
+    }, 5 * 1000);
+
+    setInterval(async () => {
+      const restockData = await API.graphql(graphqlOperation(listRestockItems));
+      const restockList = restockData.data.listRestockItems.items;
+      setRestockItems(restockList);
+      console.log("updated restock table");
+    }, 5 * 1000);
+  }, []);
 
   const fetchPriceDropItems = async () => {
     console.log("checking for price drops");
@@ -355,11 +391,8 @@ function MainDashboard() {
           let id_i = priceDropList[i].id;
           let store_name = priceDropList[i].storeName;
           let item_name = priceDropList[i].itemName;
-          if (current_price > info.price.amount) {
-            console.log("New price is cheaper... BUY NOW", current_price);
-
-            notifyPriceDrop(current_price, info.price.amount, item_name);
-            // console.log("Sent Notification");
+          if (info.price.amount != current_price) {
+            console.log("current price has changed to " + info.price.amount);
 
             let new_price = info.price.amount;
             const updatePDItem = {
@@ -369,9 +402,30 @@ function MainDashboard() {
               currentPrice: new_price,
               initialPrice: initial_price,
             };
-
             await API.graphql(graphqlOperation(updatePriceDropItem, { input: updatePDItem }));
-          } else {
+
+            if (info.price.amount < initial_price) {
+              notifyPriceDrop(initial_price, info.price.amount, item_name);
+            }
+          }
+          // if (current_price > info.price.amount) {
+          //     console.log("New price is cheaper... BUY NOW", current_price);
+
+          //     notifyPriceDrop(current_price, info.price.amount, item_name);
+          //     // console.log("Sent Notification");
+
+          //     let new_price = info.price.amount;
+          //     const updatePDItem = {
+          //       id: id_i,
+          //       storeName: store_name,
+          //       itemName: item_name,
+          //       currentPrice: new_price,
+          //       initialPrice: initial_price,
+          //     };
+
+          //     await API.graphql(graphqlOperation(updatePriceDropItem, { input: updatePDItem }));
+          //   }
+          else {
             console.log("price has not dropped", current_price);
           }
         });
@@ -380,15 +434,16 @@ function MainDashboard() {
       // let urlList = priceDropList.map(({currentPrice }) =>  currentPrice)
       // setUrlPricedropList(urlList)
 
-      console.log("price drop item list", priceDropList);
+      // console.log("price drop item list", priceDropList);
       // Update the priceDropList object
-      setPriceDropItems(priceDropList);
+      // setPriceDropItems(priceDropList);
     } catch (error) {
       console.log("error on fetching price drop items", error);
     }
   };
 
   const fetchRestockItems = async () => {
+    console.log("checking for restock");
     try {
       const restockData = await API.graphql(graphqlOperation(listRestockItems));
       const restockList = restockData.data.listRestockItems.items;
@@ -423,11 +478,11 @@ function MainDashboard() {
         });
       }
 
-      console.log("restock item list", restockList);
+      // console.log("restock item list", restockList);
 
-      setRestockItems(restockList);
+      // setRestockItems(restockList);
     } catch (error) {
-      console.log("error on fetching price drop items", error);
+      console.log("error on fetching restock items", error);
     }
   };
   // const fetchPriceDropItems = async () => {
